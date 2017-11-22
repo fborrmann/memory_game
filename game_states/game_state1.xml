@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE game SYSTEM "game_states.dtd">
+
+<game game_state = "active">
+	<active_player_id 1 />
+	<players>
+		<player id="1">
+			<name Flo />
+			<points 2 />
+		</player>
+		<player id="2">
+			<name Jens />
+			<points 1 />
+		</player>
+	</players>
+	<cards scale_factor = "2">
+		<card id = "1" card_state = "shown">
+			<position_x 200/>
+			<position_y 50/>
+		</card>
+		<card id = "1" card_state = "shown">
+			<position_x 350/>
+			<position_y 50/>
+		</card>
+		<card id = "2" card_state = "shown">
+			<position_x 200/>
+			<position_y 200/>
+		</card>
+		<card id = "2" card_state = "hidden">
+			<position_x 350/>
+			<position_y 200/>
+		</card>
+	</cards>
+	
+	
+</game>
