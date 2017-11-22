@@ -1,16 +1,23 @@
 <!DOCTYPE game
 [
-<!ELEMENT game (player, card)>
+<!ELEMENT game (players, cards, active_player_id)>
 <!ATTLIST game game_state (active | finished) #REQUIRED>
-<!ELEMENT player (points)>
+
+<!ELEMENT active_player_id (#PCDATA)>
+
+<!ELEMENT players (player)>
+<!ELEMENT player (points, name)>
 <!ELEMENT points (#PCDATA)>
-<!ATTLIST player player_state (playing | waiting) #REQUIRED
-                 name ("PCDATA") #REQUIRED
->
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST player id ("PCDATA") #REQUIRED>
+
+<!ELEMENT cards (card)
+<!ATTLIST cards scale_factor ("PCDATA") #REQUIRED>
+<!ATTLIST game game_state (active | finished) #REQUIRED>
 <!ELEMENT card (position_x, position_y)>
 <!ELEMENT position_x (#PCDATA)>
 <!ELEMENT position_y (#PCDATA)>
 <!ATTLIST card card_state (shown | hidden) #REQUIRED
-               id ("CDATA") #REQUIRED
+               id ("PCDATA") #REQUIRED
 >
 ]>
