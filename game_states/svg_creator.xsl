@@ -7,8 +7,11 @@
 	<use xlink:href="#background" transform="scale(16 10)" x= "0" y ="0" />
 	
 	<xsl:for-each select="game/cards/card">
-		<use xlink:href="cards.xml#card1" transform="scale(1.5 1.5)" y="100">
-   			 <xsl:attribute name="x" select="//position_x/text()"/>
+		<use>
+		   	<xsl:attribute name="xlink:href">cards.xml#card<xsl:value-of select="@id"/></xsl:attribute>
+		   	<xsl:attribute name="transform">scale(<xsl:value-of select="../@scale_factor"/><xsl:text> </xsl:text><xsl:value-of select="../@scale_factor"/>)</xsl:attribute>
+   			<xsl:attribute name="x"><xsl:value-of select="position_x"/></xsl:attribute>
+   			<xsl:attribute name="y"><xsl:value-of select="position_y"/></xsl:attribute>
 		</use>
 	</xsl:for-each>
 </svg>
