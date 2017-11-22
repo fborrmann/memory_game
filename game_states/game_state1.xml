@@ -2,33 +2,33 @@
 <!DOCTYPE game SYSTEM "game_states.dtd">
 
 <game game_state = "active">
-	<active_player_id 1 />
+	<active_player_id> 1 </active_player_id>
 	<players>
 		<player id="1">
-			<name Flo />
-			<points 2 />
+			<name> Flo </name>
+			<points> 2 </points> 
 		</player>
 		<player id="2">
-			<name Jens />
-			<points 1 />
+			<name> Jens </name>
+			<points> 1 </points>
 		</player>
 	</players>
 	<cards scale_factor = "2">
 		<card id = "1" card_state = "shown">
-			<position_x 200/>
-			<position_y 50/>
+			<position_x> 200 </position_x>
+			<position_y> 50 </position_y>
 		</card>
 		<card id = "1" card_state = "shown">
-			<position_x 350/>
-			<position_y 50/>
+			<position_x> 350 </position_x>
+			<position_y>  50 </position_y>
 		</card>
 		<card id = "2" card_state = "shown">
-			<position_x 200/>
-			<position_y 200/>
+			<position_x> 200 </position_x>
+			<position_y> 200 </position_y>
 		</card>
 		<card id = "2" card_state = "hidden">
-			<position_x 350/>
-			<position_y 200/>
+			<position_x> 350 </position_x>
+			<position_y> 200 </position_y>
 		</card>
 	</cards>
 	
