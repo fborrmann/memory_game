@@ -1,4 +1,4 @@
-!ELEMENT game (active_player_id, players, cards)>
+<!ELEMENT game (active_player_id, players, cards)>
 <!ATTLIST game game_state (active | finished) #REQUIRED>
 <!ELEMENT active_player_id (#PCDATA)>
 <!ELEMENT player (name, points)>
