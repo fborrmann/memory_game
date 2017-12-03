@@ -1,0 +1,23 @@
+class Game:
++Game(players,cards): Game
++createID(): int
++calculatePositions(amount_cards): int[][]
++restartGame(game_id): Game
++addPlayer(Player): void
++removePlayer(Player): void
++checkIfPair(): boolean
++changeActivePlayer(): void
++setGameState(): void
++announceWinner(): Player
+
+class Card:
++Card(card_state,position[])
++createID(): int
++turnCard(card_id): void
+  
+class Player:
++Player(name,points): Player
++createID(): int
++setPoints(player_id): void
++saveGame(): void
++quitGame(): void
