@@ -56,7 +56,29 @@
         </imageobject>
     </figure>
   </sect1>
-  
+	
+  <sect1><title>Übungsblatt 3</title>
+    <sect2><title> Aufgabe 1</title>
+    	<figure><title>Klassendiagramm zum Spiel</title>
+		<imageobject>
+		    <imagedata scale="60" fileref="input/images/class_diagram.png"/>
+		</imageobject>
+	</figure>
+        <para>
+	      Use Case 1: Der Anwender klickt auf Spiel starten. Es wird ein neues Spiel angezeigt mit der gewünschten Anzahl an Karten
+	      und den angegebenen Spielern. Alle Karten werden verdeckt angezeigt. In einem Feld neben den Karten werden die Namen aller eingetragenen Spieler
+	      angezeigt, sowie deren aktuelle Punktezahl. Diese beträgt bei Spielbeginn 0. Der aktuelle Spieler ist farblich rot hervorgehoben. Der aktuelle Spieler kann nun 2 beliebige Karten anklicken. Diese werden
+	      direkt nach der Auswahl umgedreht angezeigt. Zeigen beide Karten das gleiche Bild, wird die Punkteanzahl, welche neben dem Namen angezeigt
+	      wird, um 1 erhöht und der Spieler ist weiterhin an der Reihe. Die beiden gleichen Karten bleiben aufgedeckt sichtbar und können nicht mehr ausgewählt werden. Dies wird wiederholt, bis die beiden gewählten Karten nicht das gleiche Bild zeigen.
+	      Draufhin ist der nächste Spieler an der Reihe. Sind alle Karten aufgedeckt, wird ein Fenster angezeigt, dass den Spieler mit der höchsten Punktezahl bekannt gibt. Der Anwender bestätigt mit einem 
+	      Klick auf OK, woraufhin sich das Fenster und das Spiel schließt. 
+	  </para>
+	  <para>
+	      Use Case 2: Der Anwender klickt auf Spiel laden. Es wird ein Spiel mit einem gespeicherten Stand angezeigt. Der Spieler möchte ein anderes Spiel laden und klickt daher auf Abbrechen.
+	      Es wird ein Fenster anezeigt, das ihn fragt, ob er wirklich abbrechen möchte. Der Anwender hat die Auswahl zwischen Spiel fortfahren und Spiel abbrechen. Er klickt auf Abbrechen, worauf das Spiel geschlossen wird.
+	  </para>
+	 </sect2>
+  </sect1>
  
 
 </article>
