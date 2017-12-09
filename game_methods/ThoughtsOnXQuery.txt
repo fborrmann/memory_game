@@ -1,0 +1,93 @@
+Wie ändert man mittels Xquery nur einen kleinen Teil eines xml documents? Wie werden die Argumente übergeben?
+Gibt es einen "einfachen" Weg, um Zufallszahlen zu generieren, oder muss dafür eine Xquery Funktion erstellt werden?
+Meine beste Vermutung, ist Funktionen zu erstellen, welche als Rückgabe einen String liefern, und diese zu verwenden
+um Teile des XMLs zu editieren (bzw zu ersetzen). Bis jetzt sind es primär Funktionen, welche neuen Inhalt erzeugen, zb Um das Spiel
+zu initialisieren bzw zu zurückzusetzen.
+
+
+
+Hilfsfunktionen
+
+declare function local:CollumnToPositionX ($c as xs:integer?)
+as xs:decimal?
+{
+	return ($c * 21) + 10 
+};
+declare function local:RowToPositionY ($r as xs:integer?)
+as xs:decimal?
+{
+	return ($c * 21) + 10
+};
+
+wähle Karte in in Spalte c Zeile r
+
+for $c in doc("game_states1.xml")/game/cards
+where $c/position_x = local:CollumnToPositionX(c) and $c/position_y = local:CollumnToPositionY(r)
+return $c
+
+
+initialisiere ein Spiel mittels flwor
+
+return <players> ... </players> <cards> ... </cards>
+
+Problem : hard-coded, jedes potentielle Spiel muss einzeln kodiert werden!
+
+-> funktionen mit Parameters
+
+erstelle Spiel mit 2 Spielern und 4 Karten
+ 
+declare function local:initGame($n1 as xs:String, $n2 as xs:String)
+as xs:String
+{
+	return {local:initPlayers($n1,$n2}} ...Text um 4 Karten zu erzeugen...
+};
+
+declare function local:initPlayers ($n1 as xs:String, $n2 as xs:String)
+as xs:String
+{
+	return
+	<players>
+		<player>
+			<name>$n1</name>
+			<points>0</points>
+		</player>
+		
+		<player>
+			<name>$n2</name>
+			<points>0</points>
+		</player>
+	</players>
+};
+
+
+erster Dummy für die Funktion um die Karten zu verteilen. Vorerst werden diese nicht "gemischt" sondern liegen
+immer nebeneinander. Es findet keine Prüfung der Argumente statt! c mod 2 == 0, c <= m*n, etc.
+declare function local:initCards($c as xs:integer, $m as xs:integer, $m as xs:integer)
+as xs:String
+{
+	for $k in (0 to ($c-1))
+	return
+		<card id = ceil($k/2) card_state="shown">
+			<position_x> local:CollumnToPositionX($k mod $n)</position_x>
+			<position_y> local:RowToPositionY(floor($k/$m))</position_y>
+		</card>
+};
+
+Das Problem bleibt momentan die zufällige Verteilung der Karten. Man könnte natürich eine rng funktion schreiben, aber es
+wäre schon, wenn es hierfür bereits Funktionen bereitstehen würden (vor allem, da eine gute rng Funktion in XQuery voraussichtlich
+eine ganze Menge an Code benötigt, welcher sonst wohl nie mehr gebraucht wird. ZB Initialisierung mittels aktueller Zeit erfordert entweder
+den Zugriff auf eine Uhr, oder aber eine Zeitvariable im XML file welche regelmäßig aktualisiert wird.)
+
+Abgleich mit den Mehtoden auf der method_list.txt
+
+Game.createID()
+	-> globale Variable welche mit jedem neuen Spiel hochgezählt wird.
+	-> möglicherweise muss dafür noch eine Erweiterung des bisherigen XML vorgenommen werden, sodass die root node ein Container für mehere Games ist (die Lounge wäre ein Kandidat)
+	-> Beschränkung der gleichzeitig angebotenen Spiele?(MAX_ID?)
+Game.calculatePositions(amount_cards) : int[][]
+	-> siehe Dummy oben, möglicherweise müssen noch Variablen oder Regeln eingeführt werdem, um die Anzahl an Reihen / Spalten zu bestimmen (sollte diese mit dem Zoom mitskalieren?)
+
+Game.restartGame(game_id) : Game
+	-> nutze initGame Funktion, um den reset durchzuführen
+	-> uu müssen die ursprüngluichen parameter gespeichert werden oder aber man fordert den user zur erneuten eingabe auf.
+
