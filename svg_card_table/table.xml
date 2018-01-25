@@ -9,9 +9,9 @@
 		
 	<!--  position x & y depending on scale factor -->
 	<use xlink:href="#background" transform="scale(16 10)" x= "0" y ="0" />
-	<use xlink:href="cards.xml#card1" transform="scale(2 2)" x="200" y="50"/>
-	<use xlink:href="cards.xml#card2" transform="scale(2 2)" x="350" y="50"/>
-	<use xlink:href="cards.xml#card0" transform="scale(2 2)" x="200" y="200"/>
-	<use xlink:href="cards.xml#card1" transform="scale(2 2)" x="350" y="200"/>
+	<use xlink:href="cards.xml#flipside" transform="scale(2 2)" x="200" y="50"/>
+	<use xlink:href="cards.xml#card9" transform="scale(2 2)" x="350" y="50"/>
+	<use xlink:href="cards.xml#card14" transform="scale(2 2)" x="200" y="200"/>
+	<use xlink:href="cards.xml#card15" transform="scale(2 2)" x="350" y="200"/>
 	
 </svg>
