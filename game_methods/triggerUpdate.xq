@@ -1,11 +1,20 @@
-(:
- : testing a variable whose value is the empty sequence
- : converting elements to data types
- :)
-let $elemA := doc("globalsGame.xml")
-let $empty := $elemA/xxx
-return (
-  if (not($empty)) then "OK" else "surprise",
-  <shouldBeEmpty>{$empty}</shouldBeEmpty>,
-  xs:integer(<abc>7</abc>) + 1
-  )
+<!-- function that gets card ID and triggers an update method	 ->
+
+
+
+
+declare function local:triggerUpdate ($c as element(card))     <!-- or $c as	xs:String ->
+as xs:String
+{
+	 return {local:updateStatus($c/id)}
+}
+
+
+
+declare function local:triggerUpdate ($c as element(card))
+as xs:String
+{
+return
+  <card id = $c/id card_state="shown">
+  </card>
+}
