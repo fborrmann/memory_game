@@ -4,7 +4,7 @@
 
 
 declare function local:triggerUpdate ($c as element(card))     <!-- or $c as	xs:String ->
-as xs:String
+as xs:String   <!-- or as element(card) ->
 {
 	 return {local:updateStatus($c/id)}
 }
@@ -12,7 +12,7 @@ as xs:String
 
 
 declare function local:triggerUpdate ($c as element(card))
-as xs:String
+as xs:String   <!-- or as element(card) ->
 {
 return
   <card id = $c/id card_state="shown">
