@@ -34,6 +34,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 			<xsl:choose>
 			<xsl:when test="@card_state='hidden'">
 				<use xlink:href ="#card_flipside" x ="{position_x}" y="{position_y}"/>
+				<a href="http://localhost:8984/myDemo/showCard/{position_x}/{position_y}" target="_blank">
+					<rect x ="{position_x}" y="{position_y}" height="20" width="20" style="fill: #F00FFF" opacity="0.0">
+					</rect>
+				</a>
 			</xsl:when>
 			<xsl:otherwise>
 			<use xlink:href ="#card_face_{@id}" x ="{position_x}" y="{position_y}"/>
