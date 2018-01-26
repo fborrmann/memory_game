@@ -4,15 +4,15 @@
 
 
 <!-- this version triggers seperate update function	 ->
-declare function local:triggerUpdate ($c as element(card))
+declare function g:triggerUpdate ($c as element(card))
 as element(card)
 {
-	 return {local:updateStatus($c/id)}
+	 return {g:updateStatus($c/id)}
 }
 
 
 <!-- this version does the update itself (dummy update) ->
-declare function local:triggerUpdate ($c as element(card))
+declare function g:triggerUpdate ($c as element(card))
 as element(card)
 {
 return
