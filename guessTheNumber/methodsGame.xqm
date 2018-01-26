@@ -234,6 +234,13 @@ declare %private function g:updateGame($id as xs:string, $game as element(game))
   return (replace node $storedGame with $game) 
 };
 
+declare
+%rest:path("/guessTheNumber/showCard/{$x}/{$y}")
+%rest:GET
+function g:showCard($x as xs:integer, $y as xs:integer){
+<!-- Add show code here -->
+};
+
 
 
 
