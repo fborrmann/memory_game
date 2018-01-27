@@ -1,0 +1,13 @@
+declare function local:chooseCard($chosenCardId, $gameId) {
+  let $currentGame := db:open("game_states")//game[@id=$gameId]
+  let $flippedCard := $currentGame/flippedCard
+  let $chosenCard := $currentGame/cards/card[@id=$chosenCardId]
+  return if ($chosenCard/@card_state="hidden") then
+	if ($flippedCard=0) then (replace value of node $flippedCard with $chosenCardId, replace value of node $chosenCard/@card_state with "shown")
+	else let $flippedCardGroup := $currentGame/cards/card[@id=$flippedCard]/@pair
+	
+		return if ($currentGame/cards/card[@id=$chosenCardId]/@pair = $flippedCardGroup) then (replace value of node $currentGame/players/player[@id=1]/points with 10, replace value of node $flippedCard with 0)
+		else (replace value of node $chosenCard/@card_state with "hidden", replace value of node $currentGame/cards/card[@id=$flippedCard]/@card_state with "hidden", replace value of node $flippedCard with 0)
+	
+	else 0
+};
