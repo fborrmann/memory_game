@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="no"?>
+
+<!DOCTYPE html [
+  <!ENTITY nbsp "&#x00A0;">
+]>
+
+<!-- Define prefixes for the XHTML and the XForms namespaces. -->
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xf="http://www.w3.org/2002/xforms"
+>
+
+<head>
+  <title>Memory</title>
+
+<!-- Define an XForms model. -->
+
+<xf:model>
+  <xf:instance xmlns="" src="http://localhost:8984/guessTheNumber/welcomeScreenInfo"/>
+  <!-- Precondition: range is xs:integer >= 0 -->
+  <xf:submission id="newGame" method="post"
+    resource="http://localhost:8984/guessTheNumber/newGame" replace="instance"/>
+  <xf:submission id="guess" method="post"
+    resource="http://localhost:8984/guessTheNumber/guess" replace="instance"/>
+  <xf:submission id="playAgain" method="get"
+    resource="http://localhost:8984/guessTheNumber/welcomeScreenInfo" replace="instance"/>
+  <xf:submission id="quit" method="get"
+    resource="http://localhost:8984/guessTheNumber/quitScreenInfo" replace="instance"/>
+  <xf:instance id="noShow" xmlns="">
+    <helper>
+      <noShow>display: none</noShow>
+    </helper>
+  </xf:instance>
+</xf:model>
+
+</head>
+
+
+<body>
+  <!-- One of the following field sets is displayed, depending on screen type -->
+  
+  
+  <fieldset style="{instance('noShow')//noShow[not(//type='welcomeScreen')]}">
+    <legend>Welcome to "Memory"!</legend>
+  <xf:group ref=".">
+    <p><xf:input ref="range">
+      <xf:label>Pairs&nbsp;</xf:label>
+      <xf:hint>The number of card pairs in the game.</xf:hint>
+      <xf:alert>Enter a number greater than 1.</xf:alert>
+    </xf:input></p>
+    <p><xf:input ref="players">
+      <xf:label>Players&nbsp;</xf:label>
+      <xf:hint>The number of players in the game.</xf:hint>
+      <xf:alert>Enter a number greater than 0.</xf:alert>
+    </xf:input></p>
+    <p><xf:submit submission="newGame">
+      <xf:label>start</xf:label>
+    </xf:submit></p>
+  </xf:group>
+  </fieldset>
+  
+  
+  <fieldset style="{instance('noShow')//noShow[not(//type='firstGuessScreen')]}">
+	<svg width="1555" height="745" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+	
+		<rect id = "background" width="100" height="78.5" style="fill: lightgrey; stroke: none; stroke-width: 2"/>
+		<g id = "card1">
+			<rect width="100" height="100" style="fill: white; stroke: black; stroke-width: 2"/>
+			<circle cx ="50" cy ="50" r="25" style="fill: #339933; stroke: black; stroke-width: 2"/>
+		</g>
+		<g id = "card2">
+			<rect width="100" height="100" style="fill: white; stroke: black; stroke-width: 2"/>
+			<line x1="0" y1="0" x2="100" y2="100" style="stroke: black; stroke-width: 2"/>
+			<circle cx ="50" cy ="50" r="25" style="fill: black; stroke: black; stroke-width: 2"/>
+		</g>
+		<g id = "card3">
+			<rect width="100" height="100" style="fill: white; stroke: black; stroke-width: 2"/>
+			<!-- M: right point L: left point A: right point and radius-->
+			<path d="M 81 30 L 20 30 A 10 15 0 0 0 80 30" style="stroke: black; fill: #95f442; stroke-width: 2;"/>
+		</g>
+		<g id = "card0">
+			<rect width="100" height="100" style="fill: #FFFFFF; stroke: black; stroke-width: 2"/>
+			<rect x = "10" y = "10" width="80" height="80" style="fill: #3070B3; stroke: black; stroke-width: 2"/>
+    		<text x = "32" y = "40" style="fill: #FFFFFF; font-family: verdana;">TUM</text>
+   			<text x = "18" y = "65" style="fill: #FFFFFF; font-family: verdana;">Memory</text>
+		</g>
+		
+	</defs>
+	<use xlink:href="#background" transform="scale(16 10)" x= "0" y ="0" />
+	<a xlink:href="https://developer.mozilla.org/en-US/docs/SVG"  target="_blank">
+	<use xlink:href="#card1" transform="scale(2 2)" x="200" y="50"/>
+	<use xlink:href="#card2" transform="scale(2 2)" x="350" y="50"/>
+	<use xlink:href="#card0" transform="scale(2 2)" x="200" y="200"/>
+	<use xlink:href="#card1" transform="scale(2 2)" x="350" y="200"/>
+	</a>
+	</svg>
+  </fieldset>
+  
+  
+  <fieldset style="{instance('noShow')//noShow[not(//type='furtherGuessScreen')]}">
+    <legend>Take another guess!</legend>
+    <xf:group ref=".">
+      <p><xf:output ref="type"><xf:label>Screen type&nbsp;</xf:label></xf:output></p>
+      <p></p>
+      <table width="300em">
+        <col width="250em"/>
+        <col width="50em"/>
+        <tr>
+          <td>Range</td>
+          <td><xf:output ref="range"/></td>
+        </tr>
+        <tr>
+          <td>Number of guesses so far</td>
+          <td><xf:output ref="guessesSoFar"/></td>
+        </tr>
+        <tr>
+          <td>Maximal number of guesses</td>
+          <td><xf:output ref="maxGuesses"/></td>
+        </tr>
+        <tr>
+          <td>Previous guess was</td>
+          <td><xf:output ref="statusGuess"/></td>
+        </tr>
+      </table>
+      <p></p>
+      <p><xf:input ref="guess">
+        <xf:label>Guess&nbsp;</xf:label>
+        <xf:hint>Your next guess (a number between 1 and <xf:output ref="range"/>)</xf:hint>
+        <xf:alert>Enter a number greater than 1.</xf:alert>
+      </xf:input></p>
+      <p><xf:submit submission="guess">
+        <xf:label>guess</xf:label>
+      </xf:submit></p>
+    </xf:group>
+  </fieldset>
+  
+  
+  <fieldset style="{instance('noShow')//noShow[not(//type='resultScreen')]}">
+    <legend>Game over!</legend>
+    <xf:group ref=".">
+      <p><xf:output ref="type"><xf:label>Screen type&nbsp;</xf:label></xf:output></p>
+      <p></p>
+      <table width="300em">
+        <col width="250em"/>
+        <col width="50em"/>
+        <tr>
+          <td>Range</td>
+          <td><xf:output ref="range"/></td>
+        </tr>
+        <tr>
+          <td>Number of guesses so far</td>
+          <td><xf:output ref="guessesSoFar"/></td>
+        </tr>
+        <tr>
+          <td>Maximal number of guesses</td>
+          <td><xf:output ref="maxGuesses"/></td>
+        </tr>
+        <tr>
+          <td>Previous guess was</td>
+          <td><xf:output ref="statusGuess"/></td>
+        </tr>
+        <tr>
+          <td>Game result</td>
+          <td><xf:output ref="statusGame"/></td>
+        </tr>
+        <tr>
+          <td>Secret number is</td>
+          <td><xf:output ref="secret"/></td>
+        </tr>
+      </table>
+      <p/>
+      <p>
+        <xf:submit submission="playAgain">
+          <xf:label>play again</xf:label>
+        </xf:submit>
+        &nbsp;&nbsp;
+        <xf:submit submission="quit">
+          <xf:label>quit</xf:label>
+      </xf:submit></p>
+    </xf:group>
+  </fieldset>
+  
+  
+  <fieldset style="{instance('noShow')//noShow[not(//type='quitScreen')]}">
+    <legend>Goodbye from "Memory"!</legend>
+  </fieldset>
+  <p/>
+
+</body>
+</html>
