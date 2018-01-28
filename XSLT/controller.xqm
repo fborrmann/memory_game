@@ -9,6 +9,8 @@ declare namespace math = "http://www.w3.org/2005/xpath-functions/math";
 
 declare variable $c:memoryXForms := doc("memoryXForms.xml");
 
+declare variable $c:bild := doc("../static/data/table.xml");
+
 declare
 %rest:path("/XSLT")
 %rest:GET
@@ -35,9 +37,9 @@ declare
 function c:newGame($body) {
   let $range := $body//range/text()
   let $game := g:newGame($range)
-  return (<screenInfo>
+  return (g:renewSVG(), <screenInfo>{(
     <type>firstGuessScreen</type>
-    </screenInfo>, g:insertGame($game))
+    )}</screenInfo>)
 };
 
 declare
@@ -76,4 +78,12 @@ function c:quitScreenInfo() as element(screenInfo) {
 <screenInfo>
   <type>quitScreen</type>
 </screenInfo>
+};
+
+declare
+%rest:path("/XSLT/showCard/{$x}/{$y}")
+%rest:GET
+function c:showCard($x as xs:integer, $y as xs:integer){
+	g:renewSVG(),
+	$c:bild
 };

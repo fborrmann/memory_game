@@ -233,3 +233,25 @@ declare %private function g:updateGame($id as xs:string, $game as element(game))
   let $storedGame := $g:instancesGame//game[xs:string(id/text()) = $id]
   return (replace node $storedGame with $game)
 };
+
+declare function g:chooseCard($chosenCardId, $gameId) {
+  let $currentGame := db:open("game_states")//game[@id=$gameId]
+  let $flippedCard := $currentGame/flippedCard
+  let $chosenCard := $currentGame/cards/card[@id=$chosenCardId]
+  return if ($chosenCard/@card_state="hidden") then
+	if ($flippedCard=0) then (replace value of node $flippedCard with $chosenCardId, replace value of node $chosenCard/@card_state with "shown")
+	else let $flippedCardGroup := $currentGame/cards/card[@id=$flippedCard]/@pair
+	
+		return if ($currentGame/cards/card[@id=$chosenCardId]/@pair = $flippedCardGroup) then (replace value of node $currentGame/players/player[@id=1]/points with 10, replace value of node $flippedCard with 0)
+		else (replace value of node $chosenCard/@card_state with "hidden", replace value of node $currentGame/cards/card[@id=$flippedCard]/@card_state with "hidden", replace value of node $flippedCard with 0)
+	
+	else 0
+};
+
+declare function g:renewSVG (){
+let $in := doc('C:\Program Files (x86)\BaseX\webapp\static\data\game_states.xml')
+let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
+let $node := xslt:transform($in, $style)
+let $fName := "C:\Program Files (x86)\BaseX\webapp\static\data\table.xml"
+return file:write($fName, $node)
+};
