@@ -37,7 +37,7 @@ declare
 function c:newGame($body) {
   let $range := $body//range/text()
   let $game := g:newGame($range)
-  return (g:renewSVG(), <screenInfo>{(
+  return (<screenInfo>{(
     <type>firstGuessScreen</type>
     )}</screenInfo>)
 };
