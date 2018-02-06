@@ -18,16 +18,14 @@
 <!-- Define an XForms model. -->
 
 <xf:model>
-  <xf:instance xmlns="" src="http://localhost:8984/guessTheNumber/welcomeScreenInfo"/>
+  <xf:instance xmlns="" src="http://localhost:8984/XSLT/newGame"/>
   <!-- Precondition: range is xs:integer >= 0 -->
-  <xf:submission id="newGame" method="post"
-    resource="http://localhost:8984/guessTheNumber/newGame" replace="instance"/>
   <xf:submission id="guess" method="post"
-    resource="http://localhost:8984/guessTheNumber/guess" replace="instance"/>
+    resource="http://localhost:8984/XSLT/guess" replace="instance"/>
   <xf:submission id="playAgain" method="get"
-    resource="http://localhost:8984/guessTheNumber/welcomeScreenInfo" replace="instance"/>
+    resource="http://localhost:8984/XSLT/welcomeScreenInfo" replace="instance"/>
   <xf:submission id="quit" method="get"
-    resource="http://localhost:8984/guessTheNumber/quitScreenInfo" replace="instance"/>
+    resource="http://localhost:8984/XSLT/quitScreenInfo" replace="instance"/>
   <xf:instance id="noShow" xmlns="">
     <helper>
       <noShow>display: none</noShow>
@@ -40,8 +38,8 @@
 
 <body>
   <!-- One of the following field sets is displayed, depending on screen type -->
-  
-  
+
+
   <fieldset style="{instance('noShow')//noShow[not(//type='welcomeScreen')]}">
     <legend>Welcome to "Memory"!</legend>
   <xf:group ref=".">
@@ -60,13 +58,51 @@
     </xf:submit></p>
   </xf:group>
   </fieldset>
-  
-  
+
+
   <fieldset style="{instance('noShow')//noShow[not(//type='firstGuessScreen')]}">
-			<object data="http://localhost:8984/static/data/table.xml" type="image/svg+xml"/>
+  	<xf:group ref=".">
+      <table width="600em" valign="top">
+        <col width="200em"/>
+        <col width="400em"/>
+        <tr>
+          <td valign="top">
+          
+	      <table width="200em" bgcolor="#00FF00" style="font-family:arial;"> 
+	        <col width="100em"/>
+	        <col width="100em"/>
+	        <tr>
+	          <td>Anzahl Spieler</td>
+	          <td><xf:output ref="players"/></td>
+	        </tr>
+	        <tr>
+	          <td>Anzahl Karten</td>
+	          <td><xf:output ref="cards"/></td>
+	        </tr>
+	        <tr>
+		        <td><xf:submit submission="playAgain">
+		          <xf:label>play again</xf:label>
+		        </xf:submit></td>
+	        </tr>
+	        <tr>
+	          <td><xf:submit submission="quit">
+		          <xf:label>quit</xf:label>
+		      </xf:submit></td>
+	        </tr>
+	        
+	      </table>
+      		</td>
+      		
+          <td><object data="http://localhost:8984/static/data/bild.xml" type="image/svg+xml"/></td>
+         </tr>
+      </table>
+    </xf:group>
+  		
+		
+
   </fieldset>
-  
-  
+
+
   <fieldset style="{instance('noShow')//noShow[not(//type='furtherGuessScreen')]}">
     <legend>Take another guess!</legend>
     <xf:group ref=".">
@@ -103,8 +139,8 @@
       </xf:submit></p>
     </xf:group>
   </fieldset>
-  
-  
+
+
   <fieldset style="{instance('noShow')//noShow[not(//type='resultScreen')]}">
     <legend>Game over!</legend>
     <xf:group ref=".">
@@ -149,12 +185,18 @@
       </xf:submit></p>
     </xf:group>
   </fieldset>
-  
-  
+
+
   <fieldset style="{instance('noShow')//noShow[not(//type='quitScreen')]}">
     <legend>Goodbye from "Memory"!</legend>
   </fieldset>
   <p/>
 
+  <fieldset>
+    <legend>Debugging Info</legend>
+  <pre>
+  <xf:output value="serialize(., 'yes')"/>
+  </pre>
+  </fieldset>
 </body>
 </html>

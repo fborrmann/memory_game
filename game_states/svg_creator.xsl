@@ -7,10 +7,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- for now, match the whole xml file -->
 <xsl:template match="/">
 
-<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<svg width="1300" height="680" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
 	<defs>
 		<!-- background image -->
-		<image id = "background" width="100" height="78.5" xlink:href="background.jpg"/>
+		<image id = "background" width="100" height="78.5" xlink:href="http://localhost:8984/static/data/background.jpg"/>
 		<g id = "card_flipside">
 			<rect height="20" width="20" style="fill: #FFFFFF"/>
 			<rect x="1" y="1" height="18" width="18" style="fill: #3070B3"/>
@@ -27,17 +27,17 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		</xsl:for-each>
 	</defs>
 	<!-- set background image -->
-	<use xlink:href="#background" transform="scale(15 15)" x= "0" y ="0" />
+	<use xlink:href="#background" transform="scale(15 9)" x= "0" y ="0" />
 	<!-- show cards -->
 	<g transform = "scale({//cards/@scale_factor} {//cards/@scale_factor})">
 		<xsl:for-each select="//game/cards/card">
 			<xsl:choose>
 			<xsl:when test="@card_state='hidden'">
 				<use xlink:href ="#card_flipside" x ="{position_x}" y="{position_y}"/>
-				<a href="http://localhost:8984/myDemo/showCard/{position_x}/{position_y}" target="_blank">
+				<a href="http://localhost:8984/XSLT/showCard/{position_x}/{position_y}" target="_top">
 					<rect x ="{position_x}" y="{position_y}" height="20" width="20" style="fill: #F00FFF" opacity="0.0">
 					</rect>
-				</a>
+				</a>          
 			</xsl:when>
 			<xsl:otherwise>
 			<use xlink:href ="#card_face_{@id}" x ="{position_x}" y="{position_y}"/>

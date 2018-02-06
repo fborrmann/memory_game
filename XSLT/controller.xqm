@@ -8,8 +8,9 @@ declare namespace map = "http://www.w3.org/2005/xpath-functions/map";
 declare namespace math = "http://www.w3.org/2005/xpath-functions/math";
 
 declare variable $c:memoryXForms := doc("memoryXForms.xml");
+declare variable $c:gameTableXForms := doc("gameTableXForms.xml");
 
-declare variable $c:bild := doc("../static/data/table.xml");
+declare variable $c:bild := doc("../static/data/bild.xml");
 
 declare
 %rest:path("/XSLT")
@@ -30,16 +31,19 @@ function c:welcomeScreenInfo() as element(screenInfo) {
 </screenInfo>
 };
 
+
 declare
 %updating
 %rest:path("/XSLT/newGame")
-%rest:POST("{$body}")
-function c:newGame($body) {
-  let $range := $body//range/text()
-  let $game := g:newGame($range)
-  return (<screenInfo>{(
-    <type>firstGuessScreen</type>
-    )}</screenInfo>)
+%rest:GET
+function c:newGame() as element(screenInfo){
+
+<screenInfo>
+        <type>firstGuessScreen</type>
+        <players>5</players>
+        <cards>20</cards>
+  </screenInfo>
+  
 };
 
 declare
@@ -85,5 +89,5 @@ declare
 %rest:GET
 function c:showCard($x as xs:integer, $y as xs:integer){
 	g:renewSVG(),
-	$c:bild
+	$c:gameTableXForms
 };

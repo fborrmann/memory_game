@@ -252,6 +252,6 @@ declare function g:renewSVG (){
 let $in := doc('C:\Program Files (x86)\BaseX\webapp\static\data\game_states.xml')
 let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
 let $node := xslt:transform($in, $style)
-let $fName := "C:\Program Files (x86)\BaseX\webapp\static\data\table.xml"
+let $fName := "C:\Program Files (x86)\BaseX\webapp\static\data\bild.xml"
 return file:write($fName, $node)
 };
