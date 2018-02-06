@@ -233,3 +233,59 @@ declare %private function g:updateGame($id as xs:string, $game as element(game))
   let $storedGame := $g:instancesGame//game[xs:string(id/text()) = $id]
   return (replace node $storedGame with $game)
 };
+
+(: JOE: Methods to create a new game: g:newGame, g:createCard, g:createCards, g:spreadCards:)
+declare function g:newGame($rows as xs:integer, $players as xs:integer) as element(game)
+{
+  let $id := random:integer(100000) (: JOE: Need to add a helper to generate ID - time based?:)
+  return
+    <game gameID = "{$id}">
+      <!-- JOE: create Players -->
+      <players>
+      {for $n in 1 to $players
+        return
+          <player playerID="{$n}">
+            <name>Player{$n}</name>
+            <points>0</points>
+          </player>
+      }
+      </players>
+      <!-- JOE: create cards -->
+      <cards>
+      <!-- JOE: Position will be initialised with 0 0. There are two ways two spread the cards on the table: Use CSS block layout, or fixed coordinates. The latter might be better handeled in the xslt file! -->
+      <!-- JOE: multiple cards are generated and than permuated with a random seed -->
+      <!-- {random:seeded-permutation(random:integer(),dg:createCards($rows * $rows))} -->
+      {g:spreadCards($rows,$rows,random:seeded-permutation(random:integer(),g:createCards($rows * $rows)))}
+
+      
+      </cards>
+      
+    </game>
+};
+
+(: create a card :)
+declare %private function g:createCard($x as xs:integer, $y as xs:integer, $pairID as xs:integer) as element(card){
+  <card pairID="{$pairID}" card_state = "hidden">
+    <position_x>{$x}</position_x>
+    <position_y>{$y}</position_y>
+  </card>
+};
+(: create multiple cards :)
+declare %private function g:createCards($count as xs:integer) as element(card)*{
+  for $n in 0 to $count -1
+    return g:createCard(0,0,(($n - ($n mod 2)) div 2))
+};
+
+(: Spread the cards in rows and collumns:)
+declare %private function g:spreadCards($rows as xs:integer, $collumns as xs:integer,$cards as element(card)*) as element(card)*{
+  for $card  at $pos in $cards
+    let $i := ($pos -1) mod $collumns (: collum of element :)
+    let $j := (($pos -1) - (($pos -1) mod $rows)) div $rows
+    (: JOE: need to change "magic numbers" to an external config file:)
+    let $border := 10
+    let $increment := 21
+    return g:createCard(
+      $border + ($i * $increment) ,
+      $border + ($j * $increment),
+      $card/@pairID)
+};
