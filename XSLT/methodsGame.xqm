@@ -256,13 +256,13 @@ let $node := xslt:transform($in, $style)
 let $fName := "C:\Program Files (x86)\BaseX\webapp\static\data\bild.xml"
 return file:write($fName, $node)
 };
-=======
+
 (: JOE: Methods to create a new game: g:newGame, g:createCard, g:createCards, g:spreadCards:)
 declare function g:newGame($rows as xs:integer, $players as xs:integer) as element(game)
 {
   let $id := random:integer(100000) (: JOE: Need to add a helper to generate ID - time based?:)
   return
-    <game gameID = "{$id}">
+    <game gameID = "{$id}" game_state="active">
       <!-- JOE: create Players -->
       <players>
       {for $n in 1 to $players
@@ -287,16 +287,16 @@ declare function g:newGame($rows as xs:integer, $players as xs:integer) as eleme
 };
 
 (: create a card :)
-declare %private function g:createCard($x as xs:integer, $y as xs:integer, $pairID as xs:integer) as element(card){
-  <card pairID="{$pairID}" card_state = "hidden">
+declare %private function g:createCard($x as xs:integer, $y as xs:integer, $pair as xs:integer, $id as xs:integer) as element(card){
+  <card id="{id}" pair="{$pair}" card_state = "hidden">
     <position_x>{$x}</position_x>
     <position_y>{$y}</position_y>
   </card>
 };
 (: create multiple cards :)
 declare %private function g:createCards($count as xs:integer) as element(card)*{
-  for $n in 0 to $count -1
-    return g:createCard(0,0,(($n - ($n mod 2)) div 2))
+  for $n at $pos in 0 to $count -1
+    return g:createCard(0,0,(($n - ($n mod 2)) div 2),$pos)
 };
 
 (: Spread the cards in rows and collumns:)
@@ -310,5 +310,6 @@ declare %private function g:spreadCards($rows as xs:integer, $collumns as xs:int
     return g:createCard(
       $border + ($i * $increment) ,
       $border + ($j * $increment),
-      $card/@pairID)
+      $card/@pair,
+      $card/@id)
 };
