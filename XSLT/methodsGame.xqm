@@ -234,17 +234,17 @@ declare %private function g:updateGame($id as xs:string, $game as element(game))
   return (replace node $storedGame with $game)
 };
 
-<<<<<<< HEAD
-declare function g:chooseCard($chosenCardId, $gameId) {
+declare function local:chooseCard($chosenCard, $gameId) {
   let $currentGame := db:open("game_states")//game[@id=$gameId]
-  let $flippedCard := $currentGame/flippedCard
-  let $chosenCard := $currentGame/cards/card[@id=$chosenCardId]
-  return if ($chosenCard/@card_state="hidden") then
-	if ($flippedCard=0) then (replace value of node $flippedCard with $chosenCardId, replace value of node $chosenCard/@card_state with "shown")
-	else let $flippedCardGroup := $currentGame/cards/card[@id=$flippedCard]/@pair
+  let $currentPlayer := $currentGame/active_player_id
+  let $firstCard := $currentGame/flippedCard
+  let $cardFlipped := $currentGame/cards/card[@id=$chosenCard]
+  return if ($cardFlipped/@card_state="hidden") then
+	if ($currentGame/flippedCard=0) then (replace value of node $currentGame/flippedCard with $chosenCard, replace value of node $cardFlipped/@card_state with "shown")
+	else let $firstCardGroup := $currentGame/cards/card[@id=$firstCard]/@pair
 	
-		return if ($currentGame/cards/card[@id=$chosenCardId]/@pair = $flippedCardGroup) then (replace value of node $currentGame/players/player[@id=1]/points with 10, replace value of node $flippedCard with 0)
-		else (replace value of node $chosenCard/@card_state with "hidden", replace value of node $currentGame/cards/card[@id=$flippedCard]/@card_state with "hidden", replace value of node $flippedCard with 0)
+		return if ($currentGame/cards/card[@id=$chosenCard]/@pair = $firstCardGroup) then (replace value of node $currentGame/players/player[@id=$currentPlayer]/points with $currentGame/players/player[@id=$currentPlayer]/points+2, replace value of node $firstCard with 0)
+		else (replace value of node $cardFlipped/@card_state with "hidden", replace value of node $currentGame/cards/card[@id=$firstCard]/@card_state with "hidden", replace value of node $firstCard with 0, replace value of node $currentPlayer with ($currentPlayer mod count($currentGame/players/player))+1)
 	
 	else 0
 };
@@ -312,4 +312,3 @@ declare %private function g:spreadCards($rows as xs:integer, $collumns as xs:int
       $border + ($j * $increment),
       $card/@pairID)
 };
->>>>>>> 70449cff563dbefc61b1b161b6ee00c2fb79e6d3
