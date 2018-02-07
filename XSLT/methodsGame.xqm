@@ -234,7 +234,7 @@ declare %private function g:updateGame($id as xs:string, $game as element(game))
   return (replace node $storedGame with $game)
 };
 
-declare function local:chooseCard($chosenCard, $gameId) {
+declare function g:chooseCard($chosenCard, $gameId) {
   let $currentGame := db:open("game_states")//game[@id=$gameId]
   let $currentPlayer := $currentGame/active_player_id
   let $firstCard := $currentGame/flippedCard
