@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="no"?>
+
+<!DOCTYPE html [
+  <!ENTITY nbsp "&#x00A0;">
+]>
+
+<html xmlns ="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms">
+
+<head>
+<xf:model>
+  <xf:instance xmlns="">
+  <container>
+   <color>Green</color>
+  </container>
+  </xf:instance>
+  <xf:submission id="page2" method="get" resource="http://localhost:8984/demoB/page2"/>
+  <xf:submission id="page0" method="get" resource="http://localhost:8984/demoB/page0"/>
+</xf:model>
+</head>
+
+<body>
+  <fieldset>
+  <legend>PAGE 1</legend>
+  <xf:group ref =".">
+  
+  <!-- next page -->
+  <xf:submit submission="page2">
+    <xf:label>show page2</xf:label>
+  </xf:submit><br/>
+  
+  <!-- previous page -->
+  <xf:submit submission="page0">
+    <xf:label>back to page0</xf:label>
+  </xf:submit>
+
+  
+  </xf:group>
+  </fieldset>
+</body>
+
+</html>
