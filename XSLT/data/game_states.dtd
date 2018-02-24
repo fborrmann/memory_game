@@ -1,0 +1,19 @@
+<!ELEMENT games (game)*>
+<!ELEMENT game (flippedCard, active_player_id, players, cards)>
+<!ATTLIST game
+			id CDATA #REQUIRED
+			game_state (active | finished) #REQUIRED>
+<!ELEMENT flippedCard (#PCDATA)>
+<!ELEMENT active_player_id (#PCDATA)>
+<!ELEMENT players (player+)>
+<!ELEMENT player (name, points)>
+<!ATTLIST player id CDATA #REQUIRED>
+<!ELEMENT points (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST cards scale_factor CDATA #REQUIRED>
+<!ELEMENT card (position_x, position_y)>
+<!ELEMENT position_x (#PCDATA)>
+<!ELEMENT position_y (#PCDATA)>
+<!ATTLIST card card_state (shown | hidden) #REQUIRED
+      id CDATA #REQUIRED
+      pair CDATA #REQUIRED> 

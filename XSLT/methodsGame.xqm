@@ -253,8 +253,9 @@ declare function g:renewSVG (){
 let $in := doc('C:\Program Files (x86)\BaseX\webapp\static\data\game_states.xml')
 let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
 let $node := xslt:transform($in, $style)
-let $fName := "C:\Program Files (x86)\BaseX\webapp\static\data\bild.xml"
-return file:write($fName, $node)
+let $fName := "C:\Program Files (x86)\BaseX\webapp\XSLT\game.xml"
+let $value:= <?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+return (file:write($fName, $value), file:append($fName, $node))
 };
 
 (: JOE: Methods to create a new game: g:newGame, g:createCard, g:createCards, g:spreadCards:)

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="no"?>
+
+<!DOCTYPE html [
+  <!ENTITY nbsp "&#x00A0;">
+]>
+
+<!-- Define prefixes for the XHTML and the XForms namespaces. -->
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xf="http://www.w3.org/2002/xforms"
+>
+
+<head>
+  <title>Memory</title>
+
+<!-- Define an XForms model. -->
+
+<xf:model>
+  <xf:instance xmlns="" src="http://localhost:8984/XSLT/welcomeScreenInfo"/>
+  <!-- Precondition: range is xs:integer >= 0 -->
+  <xf:submission id="newGame" method="get"
+    resource="http://localhost:8984/XSLT/newGame"/>
+</xf:model>
+</head>
+
+
+<body>
+  <!-- One of the following field sets is displayed, depending on screen type -->
+
+    <legend>Welcome to "Memory"!</legend>
+  <xf:group ref=".">
+    <p><xf:input ref="range">
+      <xf:label>Pairs&nbsp;</xf:label>
+      <xf:hint>The number of card pairs in the game.</xf:hint>
+      <xf:alert>Enter a number greater than 1.</xf:alert>
+    </xf:input></p>
+    <p><xf:input ref="players">
+      <xf:label>Players&nbsp;</xf:label>
+      <xf:hint>The number of players in the game.</xf:hint>
+      <xf:alert>Enter a number greater than 0.</xf:alert>
+    </xf:input></p>
+    <p><xf:submit submission="newGame">
+      <xf:label>start</xf:label>
+    </xf:submit></p>
+  </xf:group>
+
+
+
+</body>
+</html>
