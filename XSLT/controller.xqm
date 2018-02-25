@@ -24,8 +24,11 @@ declare
 %rest:GET
 function c:welcomeScreenInfo() as element(screenInfo) {
 <screenInfo>
-  <range>20</range>
-  <players>5</players>
+  <pairs></pairs>
+  <player1></player1>
+  <player2></player2>
+  <player3></player3>
+  <id></id>
 </screenInfo>
 };
 
@@ -34,10 +37,11 @@ function c:welcomeScreenInfo() as element(screenInfo) {
 declare
 %updating
 %rest:path("/XSLT/newGame")
-%rest:GET
-function c:newGame(){
+%rest:POST("{$body}")
+function c:newGame($body){
 	g:renewSVG(),
-	$c:game
+	let $range := $body//pairs/text()
+	return $c:game
 };
 
 

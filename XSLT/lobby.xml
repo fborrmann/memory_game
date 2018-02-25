@@ -20,7 +20,7 @@
 <xf:model>
   <xf:instance xmlns="" src="http://localhost:8984/XSLT/welcomeScreenInfo"/>
   <!-- Precondition: range is xs:integer >= 0 -->
-  <xf:submission id="newGame" method="get"
+  <xf:submission id="newGame" method="post"
     resource="http://localhost:8984/XSLT/newGame"/>
 </xf:model>
 </head>
@@ -29,21 +29,45 @@
 <body>
   <!-- One of the following field sets is displayed, depending on screen type -->
 
-    <legend>Welcome to "Memory"!</legend>
-  <xf:group ref=".">
-    <p><xf:input ref="range">
-      <xf:label>Pairs&nbsp;</xf:label>
-      <xf:hint>The number of card pairs in the game.</xf:hint>
-      <xf:alert>Enter a number greater than 1.</xf:alert>
-    </xf:input></p>
-    <p><xf:input ref="players">
-      <xf:label>Players&nbsp;</xf:label>
-      <xf:hint>The number of players in the game.</xf:hint>
-      <xf:alert>Enter a number greater than 0.</xf:alert>
-    </xf:input></p>
-    <p><xf:submit submission="newGame">
+    <xf:group ref=".">    
+      <table width="100%" bgcolor="#00FF00" style="font-family:arial;">
+     <tr><td> Neues Spiel anlegen: </td></tr>
+  <tr>
+	  <td>Karten Paare:</td>
+	  <td><xf:input ref="pairs"/></td>
+
+  </tr>
+  <tr>
+  	  <td>Spieler 1:</td>
+	  <td><xf:input ref="player1"/></td>
+  </tr>
+    <tr>
+  	  <td>Spieler 2:</td>
+	  <td><xf:input ref="player2"/></td>
+  </tr>
+  <tr>
+  	  <td>Spieler 3:</td>
+	  <td><xf:input ref="player3"/></td>
+  </tr>
+  
+  <tr><td><p><xf:submit submission="newGame">
       <xf:label>start</xf:label>
-    </xf:submit></p>
+    </xf:submit></p></td></tr>
+  
+       <tr> <td>Gespeichertes Spiel laden: </td></tr>
+  <tr>
+	  <td>Spiel ID:</td>
+	  <td><xf:input ref="id"/></td>
+
+  </tr>
+ 
+  
+  <tr><td><p><xf:submit submission="newGame">
+      <xf:label>start</xf:label>
+    </xf:submit></p></td></tr>
+    
+    </table>
+
   </xf:group>
 
 

@@ -16,7 +16,7 @@
 <xf:model>
   <xf:instance xmlns=""/>
   <!-- Precondition: range is xs:integer >= 0 -->
-  <xf:submission id="newGame" method="get" resource="http://localhost:8984/XSLT/newGame"/>
+  <xf:submission id="newGame" method="post" resource="http://localhost:8984/XSLT/newGame"/>
   <xf:submission id="playAgain" method="get"  resource="http://localhost:8984/XSLT"/>
   <xf:submission id="quit" method="get"  resource="http://localhost:8984/XSLT/quitScreenInfo"/>
 </xf:model>
@@ -34,13 +34,28 @@
 	        <col width="50%"/>
 	        <col width="50%"/>
 	        <tr>
-	          <td>Anzahl Spieler</td>
-	          <td><xf:output ref="players"/></td>
-	        </tr>
-	        <tr>
-	          <td>Anzahl Karten</td>
-	          <td><xf:output ref="cards"/></td>
-	        </tr>
+            <td></td>
+            <td>Name</td>
+            <td>Punkte</td>         
+          </tr>
+          <xsl:for-each select="//game/players/player">
+            <xsl:choose>
+        			<xsl:when test="@id=//game/active_player_id">
+                <tr bgcolor="#ff0000">
+                   <td> Spieler <xsl:value-of select='@id'/></td>
+                   <td><xsl:value-of select='name'/></td>
+                   <td><xsl:value-of select='points'/></td>
+                </tr> 
+        			</xsl:when>
+        			<xsl:otherwise>
+                <tr bgcolor="#00FF00"> 
+                   <td> Spieler <xsl:value-of select='@id'/></td>
+                   <td><xsl:value-of select='name'/></td>
+                   <td><xsl:value-of select='points'/></td>
+                </tr>   
+        			</xsl:otherwise>
+        		</xsl:choose>             
+        	</xsl:for-each>
 	        <tr>
 		        <td><xf:submit submission="playAgain">
 		          <xf:label>play again</xf:label>
@@ -55,7 +70,7 @@
       	</td>
       	
       	<td>
-			  <table width="100%" style="font-family:arial;" background="http://localhost:8984/static/data/background.jpg"> 
+			  <table width="100%" style="font-family:arial;height:750px;" background="http://localhost:8984/static/data/background.jpg"> 
 		        <col width="20%"/>
 		        <col width="20%"/>	
 		        <col width="20%"/>	
