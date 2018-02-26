@@ -28,7 +28,7 @@ function c:welcomeScreenInfo() as element(screenInfo) {
   <player1></player1>
   <player2></player2>
   <player3></player3>
-  <id></id>
+  <id>0</id>
 </screenInfo>
 };
 
@@ -39,11 +39,18 @@ declare
 %rest:path("/XSLT/newGame")
 %rest:POST("{$body}")
 function c:newGame($body){
-	g:renewSVG(),
-	let $range := $body//pairs/text()
-	return $c:game
+	g:renewSVG($body//id),
+	$c:game
 };
 
+declare
+%updating
+%rest:path("/XSLT/click/{$id}")
+%rest:GET
+function c:click($id as xs:integer){
+	g:flipCard($id, 0),
+	$c:game 
+};
 
 (: quit screen :)
 (: ------------------------------------------------------------------------------------------ :)

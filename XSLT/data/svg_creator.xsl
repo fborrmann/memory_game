@@ -18,6 +18,11 @@
   <!-- Precondition: range is xs:integer >= 0 -->
   <xf:submission id="newGame" method="post" resource="http://localhost:8984/XSLT/newGame"/>
   <xf:submission id="playAgain" method="get"  resource="http://localhost:8984/XSLT"/>
+ 
+  <xsl:for-each select="//cards/card">
+                <xf:submission id="click{@id}" method="get"  resource="http://localhost:8984/XSLT/click/{@id}"/>
+  </xsl:for-each>	
+  
   <xf:submission id="quit" method="get"  resource="http://localhost:8984/XSLT/quitScreenInfo"/>
 </xf:model>
 
@@ -38,9 +43,9 @@
             <td>Name</td>
             <td>Punkte</td>         
           </tr>
-          <xsl:for-each select="//game/players/player">
+          <xsl:for-each select="//players/player">
             <xsl:choose>
-        			<xsl:when test="@id=//game/active_player_id">
+        			<xsl:when test="@id=//active_player_id">
                 <tr bgcolor="#ff0000">
                    <td> Spieler <xsl:value-of select='@id'/></td>
                    <td><xsl:value-of select='name'/></td>
@@ -76,11 +81,11 @@
 		        <col width="20%"/>	
 		        <col width="20%"/>
 		        <col width="20%"/>
-        		<xsl:for-each select="//game/cards/card">
+        		<xsl:for-each select="//cards/card">
         			<xsl:choose>
         			<xsl:when test="@card_state='hidden'">
                 <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click{@id}" appearance="xf:image" >
         				    <xf:label>
         				      <img src="http://localhost:8984/static/data/card_flipside.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
         				    </xf:label>
@@ -89,7 +94,7 @@
         			</xsl:when>
         			<xsl:otherwise>
                 <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click{@id}" appearance="xf:image">
         				    <xf:label>
         				      <img src="http://localhost:8984/static/data/card_face_{@pair}.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
         				    </xf:label>

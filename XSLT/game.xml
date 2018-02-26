@@ -6,6 +6,11 @@
          <xf:instance/>
          <xf:submission id="newGame" method="post" resource="http://localhost:8984/XSLT/newGame"/>
          <xf:submission id="playAgain" method="get" resource="http://localhost:8984/XSLT"/>
+         <xf:submission id="click1" method="get" resource="http://localhost:8984/XSLT/click/1"/>
+         <xf:submission id="click2" method="get" resource="http://localhost:8984/XSLT/click/2"/>
+         <xf:submission id="click3" method="get" resource="http://localhost:8984/XSLT/click/3"/>
+         <xf:submission id="click4" method="get" resource="http://localhost:8984/XSLT/click/4"/>
+         <xf:submission id="click5" method="get" resource="http://localhost:8984/XSLT/click/5"/>
          <xf:submission id="quit" method="get" resource="http://localhost:8984/XSLT/quitScreenInfo"/>
       </xf:model>
    </head>
@@ -56,37 +61,37 @@
                <col width="20%"/>
                <col width="20%"/>
                <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click1" appearance="xf:image">
                      <xf:label>
-                <img src="http://localhost:8984/static/data/card_face_1.svg" width="208" height="208"/>
+                <img src="http://localhost:8984/static/data/card_flipside.svg" width="150" height="150"/>
               </xf:label>
                   </xf:submit>
                </td>
                <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click2" appearance="xf:image">
                      <xf:label>
-                <img src="http://localhost:8984/static/data/card_face_1.svg" width="208" height="208"/>
+                <img src="http://localhost:8984/static/data/card_flipside.svg" width="150" height="150"/>
               </xf:label>
                   </xf:submit>
                </td>
                <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click3" appearance="xf:image">
                      <xf:label>
-                <img src="http://localhost:8984/static/data/card_face_2.svg" width="208" height="208"/>
+                <img src="http://localhost:8984/static/data/card_face_2.svg" width="150" height="150"/>
               </xf:label>
                   </xf:submit>
                </td>
                <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click4" appearance="xf:image">
                      <xf:label>
-                <img src="http://localhost:8984/static/data/card_flipside.svg" width="208" height="208"/>
+                <img src="http://localhost:8984/static/data/card_flipside.svg" width="150" height="150"/>
               </xf:label>
                   </xf:submit>
                </td>
                <td>
-                  <xf:submit submission="newGame" appearance="xf:image">
+                  <xf:submit submission="click5" appearance="xf:image">
                      <xf:label>
-                <img src="http://localhost:8984/static/data/card_flipside.svg" width="208" height="208"/>
+                <img src="http://localhost:8984/static/data/card_face_2.svg" width="150" height="150"/>
               </xf:label>
                   </xf:submit>
                </td>

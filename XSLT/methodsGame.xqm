@@ -249,8 +249,26 @@ declare function g:chooseCard($chosenCard, $gameId) {
 	else 0
 };
 
-declare function g:renewSVG (){
-let $in := doc('C:\Program Files (x86)\BaseX\webapp\static\data\game_states.xml')
+declare function g:flipCard($chosenCard as xs:integer, $gameId as xs:integer) {
+  let $currentGame := db:open("XSLT")//game[@id=$gameId]
+  let $currentPlayer := $currentGame/active_player_id
+  let $firstCard := $currentGame/flippedCard 
+  let $cardFlipped := $currentGame/cards/card[@id=$chosenCard]
+  
+  let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
+  let $node := xslt:transform($currentGame, $style)
+  let $fName := "C:\Program Files (x86)\BaseX\webapp\XSLT\game.xml"
+  let $value:= <?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+  return (
+  	if ($cardFlipped/@card_state="hidden") then (replace value of node $cardFlipped/@card_state with "shown")
+	else (replace value of node $cardFlipped/@card_state with "hidden"),
+	file:write($fName, $value),
+	file:append($fName, $node)
+	)
+};
+
+declare function g:renewSVG ($gameId as xs:integer){
+let $in := db:open("XSLT")//game[@id=$gameId]
 let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
 let $node := xslt:transform($in, $style)
 let $fName := "C:\Program Files (x86)\BaseX\webapp\XSLT\game.xml"

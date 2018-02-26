@@ -3,7 +3,7 @@
 <games>
   <game id="0" game_state="active">
     <flippedCard>0</flippedCard>
-    <active_player_id>1</active_player_id>
+    <active_player_id>2</active_player_id>
     <players>
       <player id="1">
 		<name>Hans</name>
@@ -14,7 +14,7 @@
         <points>2</points>
       </player>
     </players>
-    <cards scale_factor="208">
+    <cards scale_factor="150">
       <card id="1" pair="1" card_state="shown">
         <position_x>10</position_x>
         <position_y>10</position_y>
@@ -31,7 +31,7 @@
         <position_x>31</position_x>
         <position_y>31</position_y>
       </card>
-      <card id="4" pair="2" card_state="hidden">
+      <card id="5" pair="2" card_state="hidden">
         <position_x>31</position_x>
         <position_y>31</position_y>
       </card>
