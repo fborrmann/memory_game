@@ -81,8 +81,9 @@
 		        <col width="20%"/>	
 		        <col width="20%"/>
 		        <col width="20%"/>
-        		<xsl:for-each select="//cards/card">
-        			<xsl:choose>
+            <tr>          
+        		<xsl:for-each select="//cards/card[@id &lt; '5']">
+        			<xsl:choose>          
         			<xsl:when test="@card_state='hidden'">
                 <td>
                   <xf:submit submission="click{@id}" appearance="xf:image" >
@@ -100,9 +101,35 @@
         				    </xf:label>
         				  </xf:submit>
                 </td>
-        			</xsl:otherwise>
+        			</xsl:otherwise>   
         			</xsl:choose>
-        		</xsl:for-each>	      		
+        		</xsl:for-each>	  
+            </tr>   
+            
+            <tr>
+        		<xsl:for-each select="//cards/card[@id &gt; '4']">
+        			<xsl:choose>          
+        			<xsl:when test="@card_state='hidden'">
+                <td>
+                  <xf:submit submission="click{@id}" appearance="xf:image" >
+        				    <xf:label>
+        				      <img src="http://localhost:8984/static/data/card_flipside.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
+        				    </xf:label>
+        				  </xf:submit>
+                </td>
+        			</xsl:when>
+        			<xsl:otherwise>
+                <td>
+                  <xf:submit submission="click{@id}" appearance="xf:image">
+        				    <xf:label>
+        				      <img src="http://localhost:8984/static/data/card_face_{@pair}.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
+        				    </xf:label>
+        				  </xf:submit>
+                </td>
+        			</xsl:otherwise> 
+        			</xsl:choose>
+        		</xsl:for-each>	   
+            </tr>  		
 	      </table>
 		    </td>
     	</table>

@@ -20,15 +20,26 @@ function c:start() {
 };
 
 declare
+%updating
 %rest:path("/XSLT/welcomeScreenInfo")
 %rest:GET
 function c:welcomeScreenInfo() as element(screenInfo) {
 <screenInfo>
-  <pairs></pairs>
-  <player1></player1>
-  <player2></player2>
-  <player3></player3>
-  <id>0</id>
+  <pairs>2</pairs>
+  <player1>Joe</player1>
+  <player2>Tilmann</player2>
+  <player3>Egor</player3>
+  <id_chosen>0</id_chosen>
+  <IDs>
+  {( let $game := db:open("XSLT")//game[@game_state="active"]
+  	 return($game/players/player/@id/text())  	
+  )}
+  </IDs>
+  <highscore>
+  {( let $game := db:open("XSLT")//game
+  	 return(max($game/players/player/points))  	
+  )}
+  </highscore>
 </screenInfo>
 };
 
@@ -36,20 +47,33 @@ function c:welcomeScreenInfo() as element(screenInfo) {
 (: ------------------------------------------------------------------------------------------ :)
 declare
 %updating
-%rest:path("/XSLT/newGame")
+%rest:path("/XSLT/newGameID")
 %rest:POST("{$body}")
-function c:newGame($body){
-	g:renewSVG($body//id),
-	$c:game
+function c:newGameID($body){
+	g:renewSVG($body//id_chosen)
 };
 
+declare
+%updating
+%rest:path("/XSLT/newGameNew")
+%rest:POST("{$body}")
+function c:newGameNew($body){
+	let $gameData := $body//pairs
+	(: let $in := copy $c := $body//pairs
+		   			modify (replace node doc("C:\Users\sun\Desktop\XML XSL\foo2.xml") with $c)
+		    		return $c
+	:)
+		    	
+  	return g:renewSVG($body//id_chosen)
+	
+};
 declare
 %updating
 %rest:path("/XSLT/click/{$id}")
 %rest:GET
 function c:click($id as xs:integer){
-	g:flipCard($id, 0),
-	$c:game 
+	g:flipCard($id)
+
 };
 
 (: quit screen :)

@@ -20,8 +20,8 @@
 <xf:model>
   <xf:instance xmlns="" src="http://localhost:8984/XSLT/welcomeScreenInfo"/>
   <!-- Precondition: range is xs:integer >= 0 -->
-  <xf:submission id="newGame" method="post"
-    resource="http://localhost:8984/XSLT/newGame"/>
+  <xf:submission id="newGameID" method="post" resource="http://localhost:8984/XSLT/newGameID"/>
+  <xf:submission id="newGameNew" method="post" resource="http://localhost:8984/XSLT/newGameNew"/>
 </xf:model>
 </head>
 
@@ -50,21 +50,33 @@
 	  <td><xf:input ref="player3"/></td>
   </tr>
   
-  <tr><td><p><xf:submit submission="newGame">
+  <tr><td><p><xf:submit submission="newGameNew">
       <xf:label>start</xf:label>
     </xf:submit></p></td></tr>
   
        <tr> <td>Gespeichertes Spiel laden: </td></tr>
   <tr>
 	  <td>Spiel ID:</td>
-	  <td><xf:input ref="id"/></td>
+	  <td><xf:input ref="id_chosen"/></td>
+
+  </tr>
+  <tr >
+	  <td>Gespeicherte Spiele:</td>
+	  <td style="font-size:15px;"><xf:output ref="IDs"/></td>
 
   </tr>
  
+ 
   
-  <tr><td><p><xf:submit submission="newGame">
+  <tr><td><p><xf:submit submission="newGameID">
       <xf:label>start</xf:label>
     </xf:submit></p></td></tr>
+  <tr></tr>
+  <tr></tr>
+  <tr >
+	  <td>Highscore:</td>
+	  <td style="font-size:15px;"><xf:output ref="highscore"/></td>
+  </tr>
     
     </table>
 
