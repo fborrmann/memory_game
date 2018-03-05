@@ -80,7 +80,7 @@ declare %updating function g:flipCard($chosenCard as xs:integer){
    )
 };
 
-declare function g:renewSVG ($gameId as xs:integer){
+declare function g:startbyID ($gameId as xs:integer){
 let $in := db:open("XSLT")//game[@id=$gameId]
 let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
 let $node := xslt:transform($in, $style)
@@ -89,6 +89,13 @@ let $value:= <?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltf
 return (replace value of node $in/@game_state with "active", $value, $node)
 };
 
+declare function g:startbyData ($gameData as element(game)){
+let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
+let $node := xslt:transform($gameData, $style)
+let $fName := "C:\Program Files (x86)\BaseX\webapp\XSLT\game.xml"
+let $value:= <?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+return (insert nodes $gameData as first into db:open("XSLT")/games, $value, $node)
+};
 
 
 (: JOE: Methods to create a new game: g:newGame, g:createCard, g:createCards, g:spreadCards:)

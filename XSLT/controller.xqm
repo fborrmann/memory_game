@@ -50,7 +50,7 @@ declare
 %rest:path("/XSLT/newGameID")
 %rest:POST("{$body}")
 function c:newGameID($body){
-	g:renewSVG($body//id_chosen)
+	g:startbyID($body//id_chosen)
 };
 
 declare
@@ -58,13 +58,13 @@ declare
 %rest:path("/XSLT/newGameNew")
 %rest:POST("{$body}")
 function c:newGameNew($body){
-	let $gameData := $body//pairs
-	(: let $in := copy $c := $body//pairs
-		   			modify (replace node doc("C:\Users\sun\Desktop\XML XSL\foo2.xml") with $c)
-		    		return $c
-	:)
+	let $gameData1 := db:open("XSLT")//game[@id=$body//id_chosen]
+	let $gameData2 := copy $c := $gameData1
+		   				modify (replace value of node $c/@game_state with "inactive",
+		   						replace value of node $c/@id with "1")
+		    			return $c
 		    	
-  	return g:renewSVG($body//id_chosen)
+  	return g:startbyData($gameData2)
 	
 };
 declare
