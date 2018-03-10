@@ -1,0 +1,7 @@
+body {
+	background: url("http://localhost:8984/static/data/background.jpg");
+}
+
+button {
+	border: 1px solid #808080;
+}
