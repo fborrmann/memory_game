@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+	
+		
+		<defs>
+		<g id = "title">
+			
+			<rect x = "0" y = "0" width="90" height="90" style="fill: #3070B3; stroke: #FFFFFF; stroke-width: 3"/>
+    		<path stroke="#FFFFFF" fill="transparent" stroke-width="5" d="M15 30 l 10 0 l 0 25 l 0 -25 l 12.5  0 l0    22.5 l12.5  0 l0  -22.5 l12.5 0  l0    25 l0   -25 l2.5 0 l10  0 l0 25"/>
+																		  
+   			
+		</g>
+		
+		<g id = "blank">
+			<rect x = "0" y = "0" width="90" height="90" style="fill: #3070B3; stroke: #FFFFFF; stroke-width: 3"/>
+		</g>
+		
+		<g id = "letter_m">
+			<use xlink:href="#blank"/>
+			<text x = "22.5" y = "60" style="fill: #FFFFFF; font-family: verdana; font-size: 50px;">M</text>
+		</g>
+		
+		<g id = "letter_e">
+			<use xlink:href="#blank"/>
+			<text x = "25" y = "60" style="fill: #FFFFFF; font-family: verdana; font-size: 50px;">E</text>
+		</g>
+		
+		<g id = "letter_o">
+			<use xlink:href="#blank"/>
+			<text x = "22.5" y = "60" style="fill: #FFFFFF; font-family: verdana; font-size: 50px;">O</text>
+		</g>
+		
+		<g id = "letter_r">
+			<use xlink:href="#blank"/>
+			<text x = "25" y = "60" style="fill: #FFFFFF; font-family: verdana; font-size: 50px;">R</text>
+		</g>
+		
+		<g id = "letter_y">
+			<use xlink:href="#blank"/>
+			<text x = "28" y = "60" style="fill: #FFFFFF; font-family: verdana; font-size: 50px;">Y</text>
+		</g>
+		
+		</defs>
+		
+		
+		<use xlink:href="#title" x="10" y="10"/>
+		<use xlink:href="#letter_m" x="110" y="10"/>
+		<use xlink:href="#letter_e" x="210" y="10"/>
+		<use xlink:href="#letter_m" x="310" y="10"/>
+		<use xlink:href="#letter_o" x="410" y="10"/>
+		<use xlink:href="#letter_r" x="510" y="10"/>
+		<use xlink:href="#letter_y" x="610" y="10"/>
+		
+</svg>
