@@ -11,7 +11,11 @@
 
 <head>
   <title>Memory</title>
-
+<style type="text/css">
+  <![CDATA[
+          @namespace xf url("http://www.w3.org/2002/xforms");
+		  .memorycard {background: #FFFFFF; border: none;}
+		  ]]></style>
 
 <xf:model>
   <xf:instance xmlns=""/>
@@ -86,9 +90,9 @@
         			<xsl:choose>          
         			<xsl:when test="@card_state='hidden'">
                 <td>
-                  <xf:submit submission="click{@id}" appearance="xf:image" >
+                  <xf:submit submission="click{@id}" appearance="xf:image" class="memorycard">
         				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/card_flipside.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
+        				      <img src="http://localhost:8984/static/data/cards.svg#flipside" width="100" height="100"/>
         				    </xf:label>
         				  </xf:submit>
                 </td>
@@ -97,7 +101,7 @@
                 <td>
                   <xf:submit submission="click{@id}" appearance="xf:image">
         				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/card_face_{@pair}.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
+							  <img src="http://localhost:8984/static/data/cards.svg#card{@pair}" width="100" height="100"/>
         				    </xf:label>
         				  </xf:submit>
                 </td>
@@ -113,7 +117,7 @@
                 <td>
                   <xf:submit submission="click{@id}" appearance="xf:image" >
         				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/card_flipside.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
+        				      <img src="http://localhost:8984/static/data/cards.svg#flipside" width="100" height="100"/>
         				    </xf:label>
         				  </xf:submit>
                 </td>
@@ -122,7 +126,7 @@
                 <td>
                   <xf:submit submission="click{@id}" appearance="xf:image">
         				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/card_face_{@pair}.svg" width="{//cards/@scale_factor}" height="{//cards/@scale_factor}"/>
+        				      <img src="http://localhost:8984/static/data/cards.svg#card{@pair}" width="100" height="100"/>
         				    </xf:label>
         				  </xf:submit>
                 </td>
