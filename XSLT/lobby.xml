@@ -28,13 +28,20 @@
           @namespace xf url("http://www.w3.org/2002/xforms");
 		  .hsc_name {font-weight: bold;}
 		  .hsc_name::after {content:": ";}
+		  .label {display: inline-block; width: 150px; color: #3070B3;}
 body {
 	background: url("http://localhost:8984/static/data/background.jpg");
-	color: #404040;
+	color: #606060;
 	padding: 0;
 	margin: 0;
 	width: 100%;
+	font-family: verdana, arial;
 }
+
+h2 {
+	font-size: 120%;
+	color: #3070B3;
+	}
 
 button {
 	border: 1px solid #808080;
@@ -44,10 +51,41 @@ input[type="text"] {
 	border: 1px solid #808080;
 	padding: 5px;
 	font-size: 16px;
+	margin: 5px 0;
 }
 
-.box_newgame {
+select {
+	border: 1px solid #808080;
+	padding: 5px;
+	font-size: 16px;
+	margin: 5px 0;
+}
+
+button {
+	display: block;
+	margin: 5px 0 5px 150px;
+	padding: 5px;
+	font-size: 16px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.box_newgame, .box_loadgame, .box_highscores {
+background: #FFFFFF;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+padding: 15px;
+}
+
+.box_newgame, .box_loadgame {
 width: 400px;
+}
+.box_highscores {
+width: 200px;
 }
 
 timestamp {
@@ -83,15 +121,19 @@ width: 720px;
 	<div id="header">
 	<img alt="TUM Memory" src="http://localhost:8984/static/data/logo.svg" id="logo"/>
 	</div>
-  <!-- One of the following field sets is displayed, depending on screen type -->
-
-    <xf:group ref=".">
-		<div class="box_newgame">
-      <table width="100%" bgcolor="#00FF00" style="font-family:arial;">
-     <tr><td> Neues Spiel anlegen: </td></tr>
-  <tr>
-	  <td>Karten Paare:</td>
-	  <td><xf:select1 ref="pairs">
+	
+  <xf:group ref=".">
+	<div class="wrapper">
+	<div class="box_newgame">
+	<h2>Neues Spiel starten</h2>
+	
+	<xf:input ref="player1"><xf:label class="label">Spieler 1</xf:label></xf:input>
+	<xf:input ref="player2"><xf:label class="label">Spieler 2</xf:label></xf:input>
+	<xf:input ref="player3"><xf:label class="label">Spieler 3</xf:label></xf:input>
+	<xf:input ref="player4"><xf:label class="label">Spieler 4</xf:label></xf:input>
+	
+	<xf:select1 ref="pairs">
+	<xf:label class="label">Kartenpaare</xf:label>
                 <xf:item>
                     <xf:label>2</xf:label>
                     <xf:value>2</xf:value> 
@@ -138,40 +180,31 @@ width: 720px;
                 </xf:item>
 				<xf:item>
                     <xf:label>13</xf:label>
-                    <xf:value>13</xf:value> 
+                    <xf:value>13</xf:value>
+				</xf:item>
+				<xf:item>
+                    <xf:label>14</xf:label>
+                    <xf:value>14</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>15</xf:label>
+                    <xf:value>15</xf:value> 
                 </xf:item>				
-        </xf:select1></td>
-
-  </tr>
-  <tr>
-  	  <td>Spieler 1:</td>
-	  <td><xf:input ref="player1"/></td>
-  </tr>
-    <tr>
-  	  <td>Spieler 2:</td>
-	  <td><xf:input ref="player2"/></td>
-  </tr>
-  <tr>
-  	  <td>Spieler 3:</td>
-	  <td><xf:input ref="player3"/></td>
-  </tr>
-  
-   <tr>
-  	  <td>Spieler 4:</td>
-	  <td><xf:input ref="player4"/></td>
-  </tr>
-  
-  <tr><td><p><xf:submit submission="newGameNewSubmit">
-      <xf:label>start</xf:label>
-    </xf:submit></p></td></tr>
-  
-       <tr> <td>Gespeichertes Spiel laden: </td></tr>
-  <tr>
-	  <td>Spiel ID:</td>
-	  <td><xf:select1 ref="id_chosen">
-	  
-				
-				
+        </xf:select1>
+	
+	<xf:submit submission="newGameNewSubmit">
+      <xf:label>Neues Spiel starten</xf:label>
+    </xf:submit>
+	
+	</div>
+	
+	
+	
+	<div class="box_loadgame">
+	<h2>Gespeichertes Spiel öffnen</h2>
+	
+	<xf:select1 ref="id_chosen">
+	<xf:label class="label">Spiel</xf:label>
                 <xf:item>
                     <xf:label>Monday</xf:label>
                     <xf:value>monday</xf:value> 
@@ -200,34 +233,23 @@ width: 720px;
                     <xf:label>Sunday</xf:label>
                     <xf:value>sunday</xf:value>
                 </xf:item>             
-        </xf:select1></td>
+        </xf:select1>
+	
+	
+	<xf:submit submission="newGameID">
+      <xf:label>Spiel laden</xf:label>
+    </xf:submit>
+	
+	</div>
 
-  </tr>
-  <tr >
-	  <td>Gespeicherte Spiele:</td>
-	  <td style="font-size:15px;"><xf:output ref="IDs"/></td>
-
-  </tr>
- 
- 
-  
-  <tr><td><p><xf:submit submission="newGameID">
-      <xf:label>start</xf:label>
-    </xf:submit></p></td></tr>
-  <tr></tr>
-  <tr></tr>
-  <tr >
-	  <td>Highscore:</td>
-	  <td style="font-size:15px;" id="highscorelist">
-	  
-	  <xf:repeat nodeset="highscores/player"> 
-            <div><xf:output class="hsc_name" ref="name"/><xf:output ref="points"/></div> 
-        </xf:repeat> 
-	  
-	  </td>
-  </tr>
     
-    </table></div>
+	<div class="box_highscores">
+	<h2>Highscores</h2>
+	<xf:repeat nodeset="highscores/player"> 
+            <div><xf:output class="hsc_name" ref="name"/><xf:output ref="points"/></div> 
+    </xf:repeat> 
+	</div>
+	</div>	
 
   </xf:group>
 
