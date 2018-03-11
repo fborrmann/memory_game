@@ -132,6 +132,15 @@ function c:click($id as xs:integer){
 
 };
 
+declare
+%updating
+%rest:path("/XSLT/updateScreen")
+%rest:GET
+function c:click(){
+	g:updateScreen()
+
+};
+
 (: quit screen :)
 (: ------------------------------------------------------------------------------------------ :)
 declare

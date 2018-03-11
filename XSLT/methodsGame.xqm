@@ -54,26 +54,50 @@ declare %updating function g:flipCard($chosenCard as xs:integer){
 		  let $in := 
 		  	if ($cardFlipped/@card_state="hidden")
 		  	then (
-				if ($currentGame/flippedCard=0) then (replace value of node $currentGame/flippedCard with $chosenCard,replace value of node $cardFlipped/@card_state with "shown")
-				else (
-						if ($currentGame/cards/card[@id=$chosenCard]/@pair = $currentGame/cards/card[@id=$firstCard]/@pair)
+				(: bisher noch keine Karte umgedreht, erste Karte :)
+				if ($currentGame/flippedCard=0) then (replace value of node $currentGame/flippedCard with $chosenCard,replace value of node $cardFlipped/@card_state with "shown", copy $c := db:open("XSLT")//game[@id=session:get('gameId')]
+		   			modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "shown")
+		    		return $c)
+		  		
+		  		else (
+				(: bereits eine Karte umgedreht, zweite Karte :)	
+					if ($currentGame/cards/card[@id=$chosenCard]/@pair = $currentGame/cards/card[@id=$firstCard]/@pair)
 							then (
+									(: erste und zweite Karte ergeben Paar :)
+									
 									replace value of node $currentGame/players/player[@id=$currentPlayer]/points with $currentGame/players/player[@id=$currentPlayer]/points+2,
 									replace value of node $currentGame/lastpair with $currentGame/cards/card[@id=$chosenCard]/@pair,
 									replace value of node $cardFlipped/@card_state with "outofgame",
 									replace value of node $currentGame/cards/card[@id=$firstCard]/@card_state with "outofgame",
-									replace value of node $firstCard with 0
-								)
+									replace value of node $firstCard with 0,
+									copy $c := g:checkGameState()
+									modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "showandhide",
+											replace value of node $c/cards/card[@id=$firstCard]/@card_state with "showandhide",
+											replace value of node $c/players/player[@id=$currentPlayer]/points with $c/players/player[@id=$currentPlayer]/points+2)
+											
+									return $c
+							)
+							
 							else (
+
+									(: erste und zweite Karte ergeben kein Paar :)
 									replace value of node $cardFlipped/@card_state with "hidden",
 									replace value of node $currentGame/cards/card[@id=$firstCard]/@card_state with "hidden",
 									replace value of node $firstCard with 0,
-									replace value of node $currentPlayer with ($currentPlayer mod count($currentGame/players/player))+1)
-					),
-		  		
-		  		copy $c := db:open("XSLT")//game[@id=session:get('gameId')]
-		   			modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "shown", insert node <message>Hallo</message> as last into $c)
-		    		return $c
+									replace value of node $currentPlayer with (($currentPlayer mod count($currentGame/players/player))+1),
+							
+							
+									copy $c := db:open("XSLT")//game[@id=session:get('gameId')]
+									modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "showandflip",
+											replace value of node $c/cards/card[@id=$firstCard]/@card_state with "showandflip",
+											replace value of node $c/active_player_id with (($c/active_player_id mod count($c/players/player))+1))
+									return $c
+							)
+				
+				
+					
+					
+					)
 		    	)
 			else (
 				(:replace value of node $cardFlipped/@card_state with "hidden", :)
@@ -197,19 +221,26 @@ declare %private function g:spreadCards($rows as xs:integer, $collumns as xs:int
       $card/@id)
 };
 
-declare function g:getWinner($gameId as xs:integer) {
-  let $currentGame := $g:instancesGame//game[@id=$gameId]
+declare function g:getWinner() {
+  let $currentGame := $g:instancesGame//game[@id=session:get('gameId')]
   let $maxPoints := max($currentGame//player/points) 
   for $player in $currentGame//player
   where $player/points = $maxPoints
   return $player         
 };
 
-declare function g:checkGameState($gameId as xs:integer) {
-  let $currentGame := $g:instancesGame//game[@id=$gameId]
+declare function g:checkGameState() {
+  let $currentGame := $g:instancesGame//game[@id=session:get('gameId')]
   let $cardsCovered := count($currentGame//card[@card_state="hidden"])
-  return if ($cardsCovered=0) then (replace value of node $currentGame/game_state with "finished", g:getWinner($gameId))
-  else 0        
+  return if ($cardsCovered<=2) then (
+	copy $c := $currentGame
+	modify (replace value of node $c/@game_state with "finished",
+			insert node <winner>{g:getWinner()}</winner> as last into $c
+			)
+	return $c
+  )
+  (:(replace value of node $currentGame/game_state with "finished", g:getWinner()):)
+  else $currentGame       
 };
 
 declare function g:insertHighScores($gameId as xs:integer) {

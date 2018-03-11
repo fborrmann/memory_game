@@ -207,7 +207,7 @@ width: 720px;
 	<xf:label class="label">Spiel</xf:label>
                 <xf:item>
                     <xf:label>Monday</xf:label>
-                    <xf:value>monday</xf:value> 
+                    <xf:value>9262</xf:value> 
                 </xf:item>
                 <xf:item>
                     <xf:label>Tuesday</xf:label>
