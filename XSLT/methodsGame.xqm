@@ -39,6 +39,10 @@ declare function g:chooseCard($chosenCard, $gameId) {
 	else 0
 };
 
+declare function g:updateScreen() {
+ 0
+};
+
 declare %updating function g:flipCard($chosenCard as xs:integer){
   let $currentGame := db:open("XSLT")//game[@id=session:get('gameId')]
   let $currentPlayer := $currentGame/active_player_id
@@ -55,7 +59,10 @@ declare %updating function g:flipCard($chosenCard as xs:integer){
 						if ($currentGame/cards/card[@id=$chosenCard]/@pair = $currentGame/cards/card[@id=$firstCard]/@pair)
 							then (
 									replace value of node $currentGame/players/player[@id=$currentPlayer]/points with $currentGame/players/player[@id=$currentPlayer]/points+2,
-									replace value of node $firstCard with 0, replace value of node $cardFlipped/@card_state with "shown"
+									replace value of node $currentGame/lastpair with $currentGame/cards/card[@id=$chosenCard]/@pair,
+									replace value of node $cardFlipped/@card_state with "outofgame",
+									replace value of node $currentGame/cards/card[@id=$firstCard]/@card_state with "outofgame",
+									replace value of node $firstCard with 0
 								)
 							else (
 									replace value of node $cardFlipped/@card_state with "hidden",
@@ -65,14 +72,12 @@ declare %updating function g:flipCard($chosenCard as xs:integer){
 					),
 		  		
 		  		copy $c := db:open("XSLT")//game[@id=session:get('gameId')]
-		   			modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "shown")
+		   			modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "shown", insert node <message>Hallo</message> as last into $c)
 		    		return $c
 		    	)
 			else (
-				replace value of node $cardFlipped/@card_state with "hidden", 
-		  		copy $c := db:open("XSLT")//game[@id=session:get('gameId')]
-		   			modify (replace value of node $c/cards/card[@id=$chosenCard]/@card_state with "hidden")
-		    		return $c
+				(:replace value of node $cardFlipped/@card_state with "hidden", :)
+		  		db:open("XSLT")//game[@id=session:get('gameId')]
 		    	)	
 		  let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
 		  let $node := xslt:transform($in, $style)
@@ -116,7 +121,7 @@ declare function g:newGameXML($gameid as xs:integer, $cards as xs:integer, $play
 	
 	<flippedCard>0</flippedCard>
     <active_player_id>1</active_player_id>
-	
+	<lastpair></lastpair>
 	
       <players>
 	  { if ($player1!="") then <player id="1"><name>{$player1}</name><points>0</points></player> else ""}
