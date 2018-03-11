@@ -119,7 +119,27 @@ width: 720px;
                 <xf:item>
                     <xf:label>8</xf:label>
                     <xf:value>8</xf:value> 
-                </xf:item>             
+                </xf:item>
+				<xf:item>
+                    <xf:label>9</xf:label>
+                    <xf:value>9</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>10</xf:label>
+                    <xf:value>10</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>11</xf:label>
+                    <xf:value>11</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>12</xf:label>
+                    <xf:value>12</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>13</xf:label>
+                    <xf:value>13</xf:value> 
+                </xf:item>				
         </xf:select1></td>
 
   </tr>
