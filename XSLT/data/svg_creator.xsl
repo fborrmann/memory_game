@@ -116,7 +116,38 @@ top: -50px;
 left: 20px;
 transform: rotate(5deg);
 }
+
+.showandhide, .showandflip {
+background: #EEEEEE;
+width: 100px;
+height: 100px;
+padding: 0;
+margin: 0;
+border: 1px solid #808080;
+position: relative;
+}
+
+.hideandflip {
+display: none;
+}
+
+#game_finished {
+width: 600px;
+height: 300px;
+position: absolute;
+top: 200px;
+left: 400px;
+background: #FFFFFF;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+padding: 15px;
+}
+
+.winnerpoints::before { 
+    conent: " (";
+	}
+
 ]]></style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
 </head>
 
 
@@ -168,19 +199,28 @@ transform: rotate(5deg);
 		      </xf:submit>-->
 		  
 		  </div>
+		  
+		  
 		  <xsl:choose>
 		  <xsl:when test="//lastpair&gt;'-1'">
-			<div id="lastpair">
+				<div id="lastpair">
 				<div id="lastpair1">
 					<img src="http://localhost:8984/static/data/cards.svg#card{//lastpair}"/>
 				</div>
 				<div id="lastpair2">
 					<img src="http://localhost:8984/static/data/cards.svg#card{//lastpair}"/>
 				</div>
-			</div>
+				</div>
 		  </xsl:when>
+		  
+		  <xsl:otherwise>
+			<div id="lastpair">
+				<div id="lastpair1" style="display: none;"></div>
+				<div id="lastpair2" style="display: none;"></div>
+			</div>
+		  </xsl:otherwise>
+		  
 		  </xsl:choose>
-      	
       	
       	
 			  
@@ -207,6 +247,27 @@ transform: rotate(5deg);
         				    </xf:label>
         				  </xf:submit>
 					</xsl:when>
+					
+					<xsl:when test="@card_state='showandhide'">
+							
+							  <div class="showandhide" id="showandhide"><img src="http://localhost:8984/static/data/cards.svg#card{@pair}" width="100" height="100"/></div>
+        				    
+					</xsl:when>
+					
+					<xsl:when test="@card_state='showandflip'">
+							
+							  
+							  <div class="hideandflip">
+							  <xf:submit submission="click{@id}" appearance="xf:image">
+									<xf:label>
+									  <img src="http://localhost:8984/static/data/cards.svg#flipside" width="100" height="100"/>
+									</xf:label>
+							  </xf:submit>
+							  </div>
+							  <div class="showandflip"><img src="http://localhost:8984/static/data/cards.svg#card{@pair}" width="100" height="100"/></div>
+        				    
+					</xsl:when>
+					
 					</xsl:choose> 
 					</div>
         			
@@ -214,9 +275,48 @@ transform: rotate(5deg);
 				
         		</xsl:for-each>	  
 			  
-			  
-		   
+				<xsl:choose>
+					  <xsl:when test="//@game_state='finished'">
+							<div id="game_finished">
+							<h2>Fertig!</h2>
+							
+							<p>Gewonnen hat:</p>
+							
+							<xsl:for-each select="//players/player">
+							<xsl:choose>          
+							<xsl:when test="points=0">
+									   <p>
+									   <xsl:value-of select='name'/>
+									   <span class="winnerpoints">mit <xsl:value-of select='points'/></span>
+									   </p>
+							</xsl:when>
+							</xsl:choose> 							
+							</xsl:for-each>
+							
+							
+							</div>
+					  </xsl:when>
+				</xsl:choose>	
+<script>		
+		$(function () { 
+		if ( $( ".showandhide" ).length ) {	
+		$('.showandhide').delay(1000).fadeOut( 500 , function() {
+		$('#lastpair1').html($('.showandhide').html());
+		$('#lastpair2').html($('.showandhide').html());
+		$('#lastpair1').show();
+		$('#lastpair2').show();
+		});		
+		}		
+	  });
 
+	  $(function () {  
+		$('.showandflip').delay(1000).fadeOut( 500 , function() {
+		$('.hideandflip').delay(1000).show();
+		});		
+	  });
+     
+	  
+</script>
   		
 </body>
 </html>
