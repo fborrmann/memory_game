@@ -25,20 +25,73 @@
  
   <xsl:for-each select="//cards/card">
                 <xf:submission id="click{@id}" method="get"  resource="http://localhost:8984/XSLT/click/{@id}"/>
-  </xsl:for-each>	
+  </xsl:for-each>
+
+  
   
   <xf:submission id="quit" method="get"  resource="http://localhost:8984/XSLT/quitScreenInfo"/>
 </xf:model>
+<style type="text/css"><![CDATA[
 
+#header {
+width: 100%;
+margin: 0;
+padding: 20px 0;
+text-align: center;
+}
+#logo {
+width: 720px;
+}
+
+#gametable {
+max-width: 900px;
+min-width: 500px;
+}
+
+button {
+margin: 0;
+padding: 0;
+display: inline;}
+
+.memorycard {
+display: inline-block;
+margin: 10px 10px 10px 10px;
+width: 140px;
+height: 140px;
+background: none;
+line-height: 1.0;
+}
+
+#lastpair {
+margin: 50px 0 0 50px;
+}
+
+#lastpair1, #lastpair2 {
+width: 100px;
+height: 100px;
+background: #EEEEEE;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#lastpair1 {
+transform: rotate(-10deg);
+}
+#lastpair2 {
+position: relative;
+top: -50px;
+left: 20px;
+transform: rotate(5deg);
+}
+]]></style>
 </head>
 
 
-<body>
-      <table width="100%" valign="top">
-        <col width="20%"/>
-        <col width="80%"/>
+<body background="http://localhost:8984/static/data/background.jpg">
+		<div id="header">
+			<img alt="TUM Memory" src="http://localhost:8984/static/data/logo.svg" id="logo"/>
+		</div>
+      <table valign="top">
 		
-		    <td valign="top">
+		    <td valign="top" style="width: 250px; padding: 10px 50px 10px 10px;">
 	      <table width="100%" bgcolor="#00FF00" style="font-family:arial;"> 
 	        <col width="50%"/>
 	        <col width="50%"/>
@@ -76,65 +129,51 @@
 		      </xf:submit></td>
 	        </tr>
 	      </table>
+		  <xsl:choose>
+		  <xsl:when test="//lastpair&gt;'-1'">
+			<div id="lastpair">
+				<div id="lastpair1">
+					<img src="http://localhost:8984/static/data/cards.svg#card{//lastpair}"/>
+				</div>
+				<div id="lastpair2">
+					<img src="http://localhost:8984/static/data/cards.svg#card{//lastpair}"/>
+				</div>
+			</div>
+		  </xsl:when>
+		  </xsl:choose>
       	</td>
       	
-      	<td>
-			  <table width="100%" style="font-family:arial;height:750px;" background="http://localhost:8984/static/data/background.jpg"> 
-		        <col width="20%"/>
-		        <col width="20%"/>	
-		        <col width="20%"/>	
-		        <col width="20%"/>
-		        <col width="20%"/>
-            <tr>          
-        		<xsl:for-each select="//cards/card[@id &lt; '5']">
+      	<td id="gametable">
+			  
+			  
+			  <xsl:for-each select="//cards/card">
         			<xsl:choose>          
         			<xsl:when test="@card_state='hidden'">
-                <td>
-                  <xf:submit submission="click{@id}" appearance="xf:image" class="memorycard">
-        				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/cards.svg#flipside" width="100" height="100"/>
-        				    </xf:label>
-        				  </xf:submit>
-                </td>
+                
+					<div style="position: absolute; top: {140+position_y*7}px; left: {320+position_x*7}px; width: 150px; height: 150px;">	
+					  <xf:submit submission="click{@id}" appearance="xf:image">
+								<xf:label>
+								  <img src="http://localhost:8984/static/data/cards.svg#flipside" width="100" height="100"/>
+								</xf:label>
+							  </xf:submit>
+					</div>
         			</xsl:when>
-        			<xsl:otherwise>
-                <td>
+        			
+				 <xsl:when test="@card_state='shown'">
+				 <div style="position: absolute; top: {140+position_y*7}px; left: {320+position_x*7}px; width: 150px; height: 150px;">
                   <xf:submit submission="click{@id}" appearance="xf:image">
         				    <xf:label>
 							  <img src="http://localhost:8984/static/data/cards.svg#card{@pair}" width="100" height="100"/>
         				    </xf:label>
         				  </xf:submit>
-                </td>
-        			</xsl:otherwise>   
+					</div>
+        			</xsl:when>
+
+
         			</xsl:choose>
         		</xsl:for-each>	  
-            </tr>   
-            
-            <tr>
-        		<xsl:for-each select="//cards/card[@id &gt; '4']">
-        			<xsl:choose>          
-        			<xsl:when test="@card_state='hidden'">
-                <td>
-                  <xf:submit submission="click{@id}" appearance="xf:image" >
-        				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/cards.svg#flipside" width="100" height="100"/>
-        				    </xf:label>
-        				  </xf:submit>
-                </td>
-        			</xsl:when>
-        			<xsl:otherwise>
-                <td>
-                  <xf:submit submission="click{@id}" appearance="xf:image">
-        				    <xf:label>
-        				      <img src="http://localhost:8984/static/data/cards.svg#card{@pair}" width="100" height="100"/>
-        				    </xf:label>
-        				  </xf:submit>
-                </td>
-        			</xsl:otherwise> 
-        			</xsl:choose>
-        		</xsl:for-each>	   
-            </tr>  		
-	      </table>
+			  
+			  
 		    </td>
     	</table>
 
