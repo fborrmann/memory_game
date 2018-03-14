@@ -1,0 +1,14 @@
+<?xml-stylesheet type="text/xsl" href="svg_creator.xsl"?>
+<highscores>
+<player>
+    <name>Joe</name>
+    <points>18</points>
+    <timestamp>2018-03-08T15:20:33.693+01:00</timestamp>
+  </player>
+  <player>
+    <name>Hans</name>
+    <points>20</points>
+    <timestamp>2018-03-08T15:20:33.693+01:00</timestamp>
+  </player>
+
+</highscores>
