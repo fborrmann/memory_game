@@ -1,9 +1,9 @@
 xquery version "3.0"  encoding "UTF-8";
 
-module namespace h = "brueggemann/helpers";
+module namespace h = "XSLT/helpers";
 
-declare function h:timestamp() as xs:string {
-  let $random := xs:string(h:random(10000) - 1)
+declare function h:timestamp() as xs:integer {
+  let $random := xs:integer(h:random(10000) - 1)
   return $random
 };
 

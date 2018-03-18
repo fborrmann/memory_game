@@ -1,18 +1,18 @@
 xquery version "3.0"  encoding "UTF-8";
 
 module namespace g = "brueggemann/guessANumber/model";
-import module namespace h = "brueggemann/helpers" at "helpers.xqm";
+import module namespace h = "XSLT/helpers" at "helpers.xqm";
 
 declare namespace map = "http://www.w3.org/2005/xpath-functions/map";
 declare namespace math = "http://www.w3.org/2005/xpath-functions/math";
 import module namespace session = 'http://basex.org/modules/session';
-
 declare variable $g:instancesGame := db:open("XSLT")//games;
 
 
 declare function g:newID() as xs:integer {
-  xs:integer(h:timestamp())
+  h:timestamp()
 };
+
 
 declare %updating function g:insertGame($game as element(game)) {
   insert node $game as first into $g:instancesGame
@@ -23,6 +23,8 @@ declare %private function g:updateGame($id as xs:string, $game as element(game))
   let $storedGame := $g:instancesGame//game[xs:string(id/text()) = $id]
   return (replace node $storedGame with $game)
 };
+
+
 
 declare function g:chooseCard($chosenCard, $gameId) {
   let $currentGame := db:open("game_states")//game[@id=$gameId]
@@ -37,10 +39,6 @@ declare function g:chooseCard($chosenCard, $gameId) {
 		else (replace value of node $cardFlipped/@card_state with "hidden", replace value of node $currentGame/cards/card[@id=$firstCard]/@card_state with "hidden", replace value of node $firstCard with 0, replace value of node $currentPlayer with ($currentPlayer mod count($currentGame/players/player))+1)
 	
 	else 0
-};
-
-declare function g:updateScreen() {
- 0
 };
 
 declare %updating function g:flipCard($chosenCard as xs:integer){
@@ -113,15 +111,37 @@ declare %updating function g:flipCard($chosenCard as xs:integer){
    )
 };
 
-declare function g:startbyID ($gameId as xs:integer){
+declare function g:getWinner() {
+  let $currentGame := $g:instancesGame//game[@id=session:get('gameId')]
+  let $maxPoints := max($currentGame//player/points) 
+  for $player in $currentGame//player
+  where $player/points = $maxPoints
+  return $player         
+};
+
+declare function g:checkGameState() {
+  let $currentGame := $g:instancesGame//game[@id=session:get('gameId')]
+  let $cardsCovered := count($currentGame//card[@card_state="hidden"])
+  return if ($cardsCovered<=2) then (
+	copy $c := $currentGame
+	modify (replace value of node $c/@game_state with "finished",
+			insert node <winner>{g:getWinner()}</winner> as last into $c
+			)
+	return $c
+  )
+  (:(replace value of node $currentGame/game_state with "finished", g:getWinner()):)
+  else $currentGame       
+};
+
+declare function g:renewSVG ($gameId as xs:integer){
 let $in := db:open("XSLT")//game[@id=$gameId]
-let $setsession := session:set('gameId', $gameId)
 let $style := doc('C:\Program Files (x86)\BaseX\webapp\static\data\svg_creator.xsl')
 let $node := xslt:transform($in, $style)
 let $fName := "C:\Program Files (x86)\BaseX\webapp\XSLT\game.xml"
 let $value:= <?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
 return (replace value of node $in/@game_state with "active", $value, $node)
 };
+
 
 declare function g:startbyData ($gameData as element(game)){
 let $setsession := session:set('gameId', xs:integer(string($gameData/@id)))
@@ -132,11 +152,6 @@ let $value:= <?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltf
 (: return (insert nodes $gameData as first into db:open("XSLT")/games, $value, $node) Spiel befindet sich bereits in Datenbank :)
 return ($value, $node)
 };
-
-
-
-
-(: JOE: Methods to create a new game: g:newGame, g:createCard, g:createCards, g:spreadCards:)
 
 
 declare function g:newGameXML($gameid as xs:integer, $cards as xs:integer, $player1 as xs:string, $player2 as xs:string, $player3 as xs:string, $player4 as xs:string) as element(game)
@@ -219,51 +234,4 @@ declare %private function g:spreadCards($rows as xs:integer, $collumns as xs:int
       $border + ($j * $increment),
       $card/@pair,
       $card/@id)
-};
-
-declare function g:getWinner() {
-  let $currentGame := $g:instancesGame//game[@id=session:get('gameId')]
-  let $maxPoints := max($currentGame//player/points) 
-  for $player in $currentGame//player
-  where $player/points = $maxPoints
-  return $player         
-};
-
-declare function g:checkGameState() {
-  let $currentGame := $g:instancesGame//game[@id=session:get('gameId')]
-  let $cardsCovered := count($currentGame//card[@card_state="hidden"])
-  return if ($cardsCovered<=2) then (
-	copy $c := $currentGame
-	modify (replace value of node $c/@game_state with "finished",
-			insert node <winner>{g:getWinner()}</winner> as last into $c
-			)
-	return $c
-  )
-  (:(replace value of node $currentGame/game_state with "finished", g:getWinner()):)
-  else $currentGame       
-};
-
-declare function g:insertHighScores($gameId as xs:integer) {
-  let $currentGame := $g:instancesGame//game[@id=$gameId]
-  let $maxPoints := max($currentGame//player/points) 
-  let $highScores := db:open("XSLT_highscores")
-  let $countEntries := count($highScores//player)
- 
-  let $minScore := if (count($highScores//player)=0) then 0 else min($highScores//player/points)
-  return if ($minScore <= $maxPoints or $countEntries<10) then
-  for $player in $currentGame//player
-  where $player/points = $maxPoints
-  return (insert node <player><name>{string($player/name)}</name><points>{string($player/points)}</points><timestamp>{current-dateTime()}</timestamp></player> as last into $highScores/highscores, g:updateHighScores())
-  else 0
-};
-
-declare function g:updateHighScores() {
-  let $highScores := db:open("XSLT_highscores")
-  let $scores :=
-   for $player in $highScores//player
-   order by xs:integer($player/points) descending
-   return $player
-  let $del := (delete node $highScores//player)
-for $player at $count in subsequence($scores, 1, 9)
-return (insert node <player><name>{string($player/name)}</name><points>{string($player/points)}</points><timestamp>{current-dateTime()}</timestamp></player> as last into $highScores/highscores)
 };
