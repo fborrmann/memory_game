@@ -37,11 +37,7 @@ function c:welcomeScreenInfo() as element(screenInfo) {
   	 return($game/players/player/@id/text())  	
   )}
   </IDs>
-  <highscore>
-  {( let $game := db:open("XSLT")//game
-  	 return(max($game/players/player/points))  	
-  )}
-  </highscore>
+  {g:HighScoreList()}
 </screenInfo>
 };
 
