@@ -282,15 +282,13 @@ padding: 15px;
 							
 							<p>Gewonnen hat:</p>
 							
-							<xsl:for-each select="//players/player">
-							<xsl:choose>          
-							<xsl:when test="points=0">
+							<xsl:for-each select="//winners/player">
+							
 									   <p>
 									   <xsl:value-of select='name'/>
 									   <span class="winnerpoints">mit <xsl:value-of select='points'/></span>
 									   </p>
-							</xsl:when>
-							</xsl:choose> 							
+													
 							</xsl:for-each>
 							
 							
