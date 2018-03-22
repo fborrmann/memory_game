@@ -236,3 +236,12 @@ declare function g:updateHighScores() {
 for $player at $count in subsequence($scores, 1, 9)
 return (insert node <player><name>{string($player/name)}</name><points>{string($player/points)}</points><timestamp>{current-dateTime()}</timestamp></player> as last into $highScores/highscores)
 };
+
+declare function g:SavedGamesList() {
+	<savedGames>
+  {
+	let $games := db:open("XSLT")
+	for $game in $games//game
+	return (<game id="{$game/@id}" name="Game(ID={$game/@id})"/>)}
+  </savedGames>
+};

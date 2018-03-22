@@ -202,38 +202,13 @@ width: 720px;
 	
 	<div class="box_loadgame">
 	<h2>Gespeichertes Spiel öffnen</h2>
-	
-	<xf:select1 ref="id_chosen">
+	<xf:select1 ref="id_chosen" appearance="minimal">
 	<xf:label class="label">Spiel</xf:label>
-                <xf:item>
-                    <xf:label>Monday</xf:label>
-                    <xf:value>9262</xf:value> 
-                </xf:item>
-                <xf:item>
-                    <xf:label>Tuesday</xf:label>
-                    <xf:value>tuesday</xf:value>
-                </xf:item>
-                <xf:item>
-                    <xf:label>Wednesday</xf:label>
-                    <xf:value>wednesday</xf:value>
-                </xf:item>
-                <xf:item>
-                    <xf:label>Thursday</xf:label>
-                    <xf:value>thursday</xf:value>
-                </xf:item>
-                <xf:item>
-                    <xf:label>Friday</xf:label>
-                    <xf:value>friday</xf:value>
-                </xf:item>
-                <xf:item>
-                    <xf:label>Saturday</xf:label>
-                    <xf:value>saturday</xf:value>
-                </xf:item>
-                <xf:item>
-                    <xf:label>Sunday</xf:label>
-                    <xf:value>sunday</xf:value>
-                </xf:item>             
-        </xf:select1>
+		<xf:itemset nodeset="instance()/savedGames/game"> <!-- JOE: Argument von "instance" egal??-->
+				<xf:label ref="@name"></xf:label>
+				<xf:value ref="@id"/>
+		</xf:itemset>
+    </xf:select1>
 	
 	
 	<xf:submit submission="newGameID">

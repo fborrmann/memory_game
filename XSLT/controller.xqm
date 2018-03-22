@@ -21,6 +21,13 @@ function c:start() {
 };
 
 declare
+%rest:path("/Sandbox")
+%rest:GET
+function c:sandbox(){
+  doc("sandboxLobby.xml")
+};
+
+declare
 %updating
 %rest:path("/XSLT/welcomeScreenInfo")
 %rest:GET
@@ -38,6 +45,7 @@ function c:welcomeScreenInfo() as element(screenInfo) {
   )}
   </IDs>
   {g:HighScoreList()}
+  {g:SavedGamesList()}
 </screenInfo>
 };
 
