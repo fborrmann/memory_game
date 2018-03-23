@@ -199,11 +199,6 @@ declare %private function g:spreadCards($rows as xs:integer, $collumns as xs:int
       $card/@id)
 };
 
-declare function g:ListSavedGames() {
-  <savedgames>{for $g in $g:instancesGame/game 
-  where $g/@game_state="active"
-  return <game id="{$g/@id}">{for $p in $g/players/player return string($p/name)}</game>}</savedgames>
-};
 
 declare function g:HighScoreList() {
 	<highscores>{
@@ -242,6 +237,6 @@ declare function g:SavedGamesList() {
   {
 	let $games := db:open("XSLT")
 	for $game in $games//game
-	return (<game id="{$game/@id}" name="Game(ID={$game/@id})"/>)}
+	return (<game id="{$game/@id}" name="({for $p in $game/players/player return concat(string($p/name),", ")})"/>)}
   </savedGames>
 };
