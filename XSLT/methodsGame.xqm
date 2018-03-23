@@ -1,6 +1,6 @@
 xquery version "3.0"  encoding "UTF-8";
 
-module namespace g = "brueggemann/guessANumber/model";
+module namespace g = "XSLT/model";
 import module namespace h = "XSLT/helpers" at "helpers.xqm";
 
 declare namespace map = "http://www.w3.org/2005/xpath-functions/map";

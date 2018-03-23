@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE bookarticlearticlearticlearticle PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "../docbook-xml-4.5/docbookx.dtd">
+<article>
+  <articleinfo>
+    <title>Dokumentation zum Praktikum XML-Technologie</title>
+        
+    <author>
+      <firstname>Group</firstname>
+      <surname>XSLT</surname>
+      <affiliation>
+      </affiliation>
+    </author>
+   </articleinfo>
+
+  <sect1><title>Übungsblatt 1</title>
+  	<sect2><title>Aufgabe 4</title>
+  	  Dokumentation zu Aufgabe 1-3
+  	</sect2>
+  	<sect2><title>Aufgabe 5</title>
+      Das Spiel muss logisch in 2 Ebenen unterteilt werden. Zunächst eine 
+      Lounge-Ansicht, in der sich Leute durch Angabe eines Spielernamens registrieren können, bzw. anmelden können.
+      Dort werden den Spielern nach der Anmeldung ihre offenen Spiele angezeigt, und zudem eine Highscore-Liste mit den schnellsten
+      Spielen. Es muss dort ebenfalls die Möglichkeit geben, ein neues Spiel zu starten oder ein gespeichertes
+      Spiel fortzusetzen. Beim Start eines neuen Spiels, muss der Spieler auswählen können, mit wie vielen Karten,
+      und Personen er spielen möchte. Jeder mitspielenden Person soll zudem ein Name gegeben werden können.
+      Sobald ein Spiel gestartet wurde, wird ein Spielfeld mit der gewünschten Kartenanzahl
+      angezeigt, wobei die Karten zu beginn alle verdeckt liegen, wenn es sich um ein neu gestartetes Spiel handelt. Zudem wird die Anzahl an bisherigen Versuchen, sowie
+      der aktuelle Spieler angezeigt. Der Spieler klickt nacheinander 2 Karten an, die jeweils aufgedeckt werden.
+      Haben die gewählten Karten nicht das gleiche Bild, werden sie wieder umgedreht und der nächste Spieler ist
+      an der Reihe. Sind beide Karten gleich, bleiben die Karten aufgedeckt. Im letzteren Fall wird die Punkteanzahl für den aktuellen
+      Spieler um 1 nach oben gesetzt und er darf weiter machen. Sobald er kein passendes Paar an Karten aufdeckt, ist der nächste Spieler
+      an der Reihe.
+      Das Spiel muss zu jedem Zeitpunkt gespeichert und abgebrochen werden können. Bei einem Abbruch kehrt das Spiel wieder in
+      die Lounge-Ansicht zurück. Das Spiel ist beendet, sobald alle Karten mit ihrem Bild nach oben liegen. Daraufhin kehrt das Spiel ebenfalls wieder in
+      die Lounge-Ansicht zurück.
+    </sect2>
+    <sect2><title>Aufgabe 6</title>
+  	  Dokumentation zu erstem SVG Entwurf
+  	</sect2>
+  </sect1>
+  
+  <sect1><title>Übungsblatt 2</title>
+	  <sect2><title> Aufgabe 1</title>
+	  In der Spiele-Umgebung sind mehrere Elemente situationsabhängig und müssen damit definierte Zustände besitzen.
+	  Dies sind zunächst die Spiel-Karten. Ihre beiden Zustände sind verdeckt und offen. Ihre Anzahl und damit ihre Position auf
+	  dem Spielfeld muss zudem parametrisch beschrieben werden.
+	  Auch die Anzeige des aktuellen Spielers muss durch Zustände beschrieben werden. Ein Spieler kann an der Reihe sein oder nicht.
+	  Weiterhin ist die Anzahl der Spieler, sowie deren Punktestand parametrisch vorzuhalten.
+	  Zuletzt muss der Spielstand mit Zustandsdaten beschrieben werden. Dies beeinhaltet die Info, wie viele Karten bereits aufgedeckt wurden.
+	  Abhängig davon wird der Zustand definiert, ob das Spiel gespielt wird, oder ob es beendet ist, da alle Karten aufgedeckt wurden.
+	  Auch die Funktionen speichern und abbrechen gehören zum Spiel, welche die Zustände des Spiels verändern.
+	  </sect2>
+	  <figure><title>Klassendiagramm zum Spiel</title>
+        <imageobject>
+            <imagedata scale="60" fileref="input/images/class_diagram.png"/>
+        </imageobject>
+    </figure>
+  </sect1>
+	
+  <sect1><title>Übungsblatt 3</title>
+    <sect2><title> Aufgabe 1</title>
+    	<figure><title>Klassendiagramm zum Spiel</title>
+		<imageobject>
+		    <imagedata scale="60" fileref="input/images/class_diagram.png"/>
+		</imageobject>
+	</figure>
+        <para>
+	      Use Case 1: Der Anwender klickt auf Spiel starten. Es wird ein neues Spiel angezeigt mit der gewünschten Anzahl an Karten
+	      und den angegebenen Spielern. Alle Karten werden verdeckt angezeigt. In einem Feld neben den Karten werden die Namen aller eingetragenen Spieler
+	      angezeigt, sowie deren aktuelle Punktezahl. Diese beträgt bei Spielbeginn 0. Der aktuelle Spieler ist farblich rot hervorgehoben. Der aktuelle Spieler kann nun 2 beliebige Karten anklicken. Diese werden
+	      direkt nach der Auswahl umgedreht angezeigt. Zeigen beide Karten das gleiche Bild, wird die Punkteanzahl, welche neben dem Namen angezeigt
+	      wird, um 1 erhöht und der Spieler ist weiterhin an der Reihe. Die beiden gleichen Karten bleiben aufgedeckt sichtbar und können nicht mehr ausgewählt werden. Dies wird wiederholt, bis die beiden gewählten Karten nicht das gleiche Bild zeigen.
+	      Draufhin ist der nächste Spieler an der Reihe. Sind alle Karten aufgedeckt, wird ein Fenster angezeigt, dass den Spieler mit der höchsten Punktezahl bekannt gibt. Der Anwender bestätigt mit einem 
+	      Klick auf OK, woraufhin sich das Fenster und das Spiel schließt. 
+	  </para>
+	  <para>
+	      Use Case 2: Der Anwender klickt auf Spiel laden. Es wird ein Spiel mit einem gespeicherten Stand angezeigt. Der Spieler möchte ein anderes Spiel laden und klickt daher auf Abbrechen.
+	      Es wird ein Fenster anezeigt, das ihn fragt, ob er wirklich abbrechen möchte. Der Anwender hat die Auswahl zwischen Spiel fortfahren und Spiel abbrechen. Er klickt auf Abbrechen, worauf das Spiel geschlossen wird.
+	  </para>
+	 </sect2>
+  </sect1>
+ 
+
+</article>

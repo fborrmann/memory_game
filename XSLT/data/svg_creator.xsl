@@ -285,8 +285,7 @@ padding: 15px;
 							<xsl:for-each select="//winners/player">
 							
 									   <p>
-									   <xsl:value-of select='name'/>
-									   <span class="winnerpoints">mit <xsl:value-of select='points'/></span>
+									   <xsl:value-of select='name'/><td> </td> <span class="winnerpoints"><td> </td> mit<td> </td> <xsl:value-of select='points'/><td> </td> Punkten</span>
 									   </p>
 													
 							</xsl:for-each>

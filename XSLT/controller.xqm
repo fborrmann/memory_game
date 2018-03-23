@@ -1,7 +1,7 @@
 xquery version "3.0"  encoding "UTF-8";
 
-module namespace c = "brueggemann/guessANumber/controller";
-import module namespace g = "brueggemann/guessANumber/model" at "methodsGame.xqm";
+module namespace c = "XSLT/controller";
+import module namespace g = "XSLT/model" at "methodsGame.xqm";
 
 declare namespace map = "http://www.w3.org/2005/xpath-functions/map";
 declare namespace math = "http://www.w3.org/2005/xpath-functions/math";
@@ -20,12 +20,7 @@ function c:start() {
   $c:lobby
 };
 
-declare
-%rest:path("/Sandbox")
-%rest:GET
-function c:sandbox(){
-  doc("sandboxLobby.xml")
-};
+
 
 declare
 %updating
@@ -34,11 +29,11 @@ declare
 function c:welcomeScreenInfo() as element(screenInfo) {
 <screenInfo>
   <pairs>2</pairs>
-  <player1>Joe</player1>
-  <player2>Tilmann</player2>
-  <player3>Egor</player3>
-  <player4>Franziska</player4>
-  <id_chosen>0</id_chosen>
+  <player1></player1>
+  <player2></player2>
+  <player3></player3>
+  <player4></player4>
+  <id_chosen></id_chosen>
   <IDs>
   {( let $game := db:open("XSLT")//game[@game_state="active"]
   	 return($game/players/player/@id/text())  	
@@ -56,7 +51,7 @@ declare
 %rest:path("/XSLT/newGameID")
 %rest:POST("{$body}")
 function c:newGameID($body){
-	g:renewSVG($body//id_chosen)
+	g:startbyId($body//id_chosen)
 };
 
 declare
