@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE bookarticlearticlearticlearticle PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "../docbook-xml-4.5/docbookx.dtd">
+<article>
+  <articleinfo>
+    <title>Dokumentation zum Praktikum XML-Technologie</title>
+        
+    <author>
+      <firstname>Group</firstname>
+      <surname>XSLT</surname>
+      <affiliation>
+      </affiliation>
+    </author>
+   </articleinfo>
+
+	  	<sect1><title>Gliederung und Beschreibung der Ansichten</title>
+	      Das Spiel ist logisch in 2 Ebenen unterteilt. Zunächst eine 
+	      Lounge-Ansicht, in der Spielern offene Spiele angezeigt werden, sowie eine Highscore-Liste.
+	      Die Lounge bietet die Möglichkeit, ein neues Spiel zu starten oder ein gespeichertes
+	      Spiel fortzusetzen. Beim Start eines neuen Spiels, kann der Spieler auswählen, mit wie vielen Karten,
+	      und Personen er spielen möchte. Jedem Mitspieler kann zudem ein Name gegeben werden.
+	      Sobald ein Spiel gestartet wurde, wird die zweite Ebene, ein Spielfeld mit der gewünschten Kartenanzahl
+	      angezeigt, wobei die Karten zu beginn alle verdeckt liegen, wenn es sich um ein neu gestartetes Spiel handelt. Zudem werden
+	      die Spieler mit ihren aktuellen Punkten angezeigt, wobei der aktuelle Spieler farblich hervorgehoben ist.
+	      Das Spiel kann zu jedem Zeitpunkt unterbrochen werden. Dabei kehrt das Spiel wieder in
+	      die Lounge-Ansicht zurück. Das Spiel ist beendet, sobald alle Karten mit ihrem Bild nach oben liegen.
+	      Daraufhin wird anstelle der Karten das Ergebnis des Spiels angezeigt.
+	    </sect1>
+
+	    <sect1><title> Elemente eines Spiels</title>
+		  In der Spiele-Umgebung sind mehrere Elemente situationsabhängig und müssen damit definierte Zustände besitzen.
+		  Dies sind zunächst die Spiel-Karten. Ihre beiden Zustände sind verdeckt und offen. Ihre Anzahl und damit ihre Position auf
+		  dem Spielfeld muss zudem parametrisch beschrieben werden.
+		  Auch die Anzeige des aktuellen Spielers muss durch Zustände beschrieben werden. Ein Spieler kann an der Reihe sein oder nicht.
+		  Weiterhin ist die Anzahl der Spieler, sowie deren Punktestand parametrisch vorzuhalten.
+		  Zuletzt muss der Spielstand mit Zustandsdaten beschrieben werden. Dies beeinhaltet die Info, wie viele Karten bereits aufgedeckt wurden.
+		  Abhängig davon wird der Zustand definiert, ob das Spiel gespielt wird, oder ob es beendet ist, da alle Karten aufgedeckt wurden.
+		  Auch die Funktionen speichern und abbrechen gehören zum Spiel, welche die Zustände des Spiels verändern.
+		    <figure><title>Klassendiagramm zum Spiel</title>
+		        <imageobject>
+		            <imagedata scale="60" fileref="input/images/class_diagram.png"/>
+		        </imageobject>
+		    </figure>
+	    </sect1>
+	    
+	    <sect1><title>Speicherung Spieldaten in Datenbanken</title>
+	  	</sect1>
+	  		    
+	    <sect1><title>View - Erstellung HTML Nodes mit XSLT</title>
+	  	</sect1>
+	  	
+	  	<sect1><title>Controller - Kommunikation Client/Server</title>
+	  	</sect1>	  	
+	  	<sect1><title>Model - Interne Funktionen</title>
+	  		<para>Erstellen neues Spiel - newGameXML()  
+			</para>
+	  		<para>Anzeige Spiele - ListSavedGames()  
+			</para>
+	  		<para>Anzeige Highscores - HighScoreList()  
+			</para>
+	  		<para>Spiellogik - flipCard(): 
+		  	  Ein Spieler klickt nacheinander 2 Karten an, die jeweils aufgedeckt werden.
+		      Haben die gewählten Karten nicht das gleiche Bild, werden sie wieder umgedreht und der nächste Spieler ist
+		      an der Reihe. Sind beide Karten gleich, werden die Karten aus dem Spielfeld entfernt.
+		      In diesem Fall wird die Punkteanzahl für den aktuellen Spieler um 1 nach oben gesetzt und er darf weiter machen.
+		      Sobald er kein passendes Paar an Karten aufdeckt, ist der nächste Spieler an der Reihe.
+			</para>
+	  	</sect1>
+
+ 
+
+</article>
