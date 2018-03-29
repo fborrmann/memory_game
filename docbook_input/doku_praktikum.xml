@@ -43,29 +43,61 @@
 	    </sect1>
 	    
 	    <sect1><title>Speicherung Spieldaten in Datenbanken</title>
-		Für die Speicherung der Daten werden in BaseX zwei Datenbanken angelegt: &quot;XSLT&quot;, welches die Informationen über die erzeugten Spiele speichert und &quot;XSLT_highscores&quot; in welcher die Daten zur Bestenliste zu finden sind. Diese Trennung ist keine Notwendigkeit für die gegebene Implementierung, sondern soll rein zur logischen Trennung der Daten dienen. Eine logische Trennung der Daten ist sinnvoll, speziell wenn das Programm in der Zukfunft erweitert oder modifiziert wird. Anfangs müssen beide Dantebanken mittels entsprechenden XML-Dateien initialisiert werden, welche weitestgehend aus einem leeren Wurzelknoten bestehen. Wird anschließend in der Anwendung ein neues Spiel erzeugt, so wird dieses mittels der XQuery Update Facility (bereitgestellt durch BaseX) als neuer Knoten in der XSLT Datenbank eingefügt. Auf ähnliche Weise erfolgt die Speicherung der Ergebnisse in der Bestenliste. Da diese jedoch nur die besten zehn Ergebnisse speichern soll, muss geprüft werden, ob ein Ergebniss in die Liste aufgenommen werden soll und ob dabei ein bestehender Wert verdrängt wird. Die entsprechende Logik wird in der Funktion &quot;g:insertHighsScores&quot;, sowie deren Hilfsfunktion &quot;g:updateHighScores&quot; umgesetzt, welche sich selbst der XQUF bedient um zunächst die alten Werte aus der Datenbank zu löschen und anschließend die neue Liste zurückzuschreiben.
+			  Für die Speicherung der Daten werden in BaseX zwei Datenbanken angelegt: &quot;XSLT&quot;, welches die Informationen über die erzeugten Spiele speichert und &quot;XSLT_highscores&quot; in welcher die Daten zur Bestenliste zu finden sind. Diese Trennung ist keine Notwendigkeit für die gegebene Implementierung, sondern soll rein zur logischen Trennung der Daten dienen. Eine logische Trennung der Daten ist sinnvoll, speziell wenn das Programm in der Zukfunft erweitert oder modifiziert wird. Anfangs müssen beide Dantebanken mittels entsprechenden XML-Dateien initialisiert werden, welche weitestgehend aus einem leeren Wurzelknoten bestehen. Wird anschließend in der Anwendung ein neues Spiel erzeugt, so wird dieses mittels der XQuery Update Facility (bereitgestellt durch BaseX) als neuer Knoten in der XSLT Datenbank eingefügt. Auf ähnliche Weise erfolgt die Speicherung der Ergebnisse in der Bestenliste. Da diese jedoch nur die besten zehn Ergebnisse speichern soll, muss geprüft werden, ob ein Ergebniss in die Liste aufgenommen werden soll und ob dabei ein bestehender Wert verdrängt wird. Die entsprechende Logik wird in der Funktion &quot;g:insertHighsScores&quot;, sowie deren Hilfsfunktion &quot;g:updateHighScores&quot; umgesetzt, welche sich selbst der XQUF bedient um zunächst die alten Werte aus der Datenbank zu löschen und anschließend die neue Liste zurückzuschreiben.
 	  	</sect1>
-	  		    
-	    <sect1><title>View - Erstellung HTML Nodes mit XSLT</title>
-		Konzeptionell lässt sich das Spiel in zwei Bereiche einteilen: Zum einen existiert die Lobby, in der die Highscore-Liste zu finden ist, neue Spiele erstellt und alte Spiele geladen werden können. Zum anderen gibt es die Darstellung für das Memory-Spiel selbst, mitsamt der Karten und dem User-Interface. Diese  Zweiteilung lässt sich in ähnlicher Weise auch in der Implementierung wiederfinden, wobei jedoch Unterschiede in der jeweiligen Umsetzung bestehen. Der statische Teil der Lobby liegt direkt als Datei(&quot;Lobby.xml&quot;) vor, und nutzt RestXQ um die übrigen Elemente einzufügen (Highscoreliste, Liste der gespeicherten Spiele). Auch wird die Instanz des XForms-Modell mittels RestXQ erzeugt. Für die Darstellung eines aktiven Spiels wird hingegen ein anderer Ansatz verfolgt, welcher sich auf XSL Transformationen stützt um aus den Spieldaten die aktuelle Sicht zu erzeugen. Da diese Umsetzung alle nötigen Informationen aus der Datenbank und der Session-ID bezieht, lässt sich das Laden und Speichern eines Spiels damit mit wenig zusätzlichem Aufwand realisieren. Um aus den Daten die Ausgabe mittels eines XSL Stylesheets zu erzeugen wird die Funktion &quot;xslt:transform($input, $stylesheet)&quot; auf die XML Daten angewendet. Diese verwendet als Default den Xalan Prozessor für die Transformationen, bzw. den Saxxon Prozessor, falls verfügbar. Mittels des hier verwendete Stylesheet(&quot;svg_creator.xsl&quot;) erzeugt dieser Prozessor das XHTML Dokument (inklusive XForms-Modell und Kontrollen), welches dem Nutzer anschließend durch den Browser als aktuelle Sicht angezeigt wird. Da XSLT unter anderem Schleifen unterstützt, lässt sich auf diese Weise eine eindeutige Submission für jede Karte erzeugen, aufgrund derer übermittelt wird, welche Karte vom Spieler selektiert wurde. Mittels &quot;xsl:choose&quot; kann eine Fallunterscheidung getroffen werden, um beispielsweise zu entscheiden, welche Seite einer Karte angezeigt werden soll. Auch die finale Zusammenfassung der Spiels, inklusive der Bekanntgabe der Gewinner erfogt mittels des Stylesheets. Die Neu-Erzeugung des Dokuments bringt für das Memory-Projekt einige Vorteile mit sich und zeigt akzeptable Performanz. Für größere Projekte sollten jedoch weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
-	  	</sect1>
-	  	
-	  	<sect1><title>Controller - Kommunikation Client/Server</title>
-	  	</sect1>	  	
-	  	<sect1><title>Model - Interne Funktionen</title>
-	  		<para>Erstellen neues Spiel - newGameXML()  
-			</para>
-	  		<para>Anzeige Spiele - ListSavedGames()  
-			</para>
-	  		<para>Anzeige Highscores - HighScoreList()  
-			</para>
-	  		<para>Spiellogik - flipCard(): 
-		  	  Ein Spieler klickt nacheinander 2 Karten an, die jeweils aufgedeckt werden.
+	  	<sect1><title>Interne Funktionen</title>
+	  		<sect2><title>Erstellen neues Spiel</title>  
+	  		  Wie in Kapitel 1 beschrieben, kann in der Lobby ein neues Spiel gestartet werden.
+	  		  Die eingegebenen Daten (Spielernamen, Kartenanzahl) werden danach zusammen mit dem Zeitstempel als ID der 
+	  		  Funktion newGameXML übergeben. In dieser wird das Spiel-Element, wie in Kapitel 2 beschrieben, aufgebaut. 
+	  		  Die übergebene ID wird zur ID des Spiels, per Default ist der erste eingetragene Spieler der erste aktive Spieler
+	  		  und für jeden eingetragenen Spieler-Namen wird ein Spieler-Knoten mit dem entsprechenden Namen und einer Punktezahl von Null angelegt.
+	  		  Um für die gewählte Anzahl an Kartenpaaren die entsprechende Menge an Karten-Knoten zu erzeugen, wird innerhalb von newGameXML() die Methode
+	  		  spreadCards() aufgerufen. Bei deren Aufruf werden zunächst abhängig von der Kartenanzahl die gewünschte Menge an Karten-Knoten 
+	  		  mit korrekter ID und Paar-Nummer mit Hilfe der Funktion createCards() erzeugt und spreadCards() zusammen mit der Spalten- und Zeilenanzahl als Input übergeben.
+	  		  Der Wert der Positions-Elemente ist jedoch für alle Karten zunächst noch Null.
+	  		  Erst beim Durchlauf der Funktion spreadCards() werden den einzelnen Karten per Zufalls-Permutation Zeilen- und Spalten-Nummer zugewiesen.
+			</sect2>
+	  		<sect2><title>Anzeige Spiele und Highscores</title>  
+	  		  In der Lobby sind wie in Kapitel 1 bedchrieben, die gespeicherten Spiele, als auch die Highscores anzuzeigen.
+	  		  Diese Anzeigen werden jeweils mit den Funktionen SavedGamesList() und HighScoreList() ermöglicht.
+	  		  Erstere läd alle gepeicherten Spiele aus der Datenbank und gibt für jedes dieser Spiele einen Knoten zurück, der ID und
+	  		  die zusammengefassten Namen der Spieler des Spiels als Elemente enthält.
+	  		  In HighScoreList () wird ein Knoten "highscores" mit allen in der Datenbank XSLT_highscores enthaltenene Spielern befüllt,
+	  		  sortiert nach der Anzahl der Highscore-Punkte jedes enthaltenen Spielers.
+	  		  Diese Knoten werden dann in der lobby.xml ausgelesen und der Reihe nach angezeigt.
+			</sect2>
+	  		<sect2><title>Spiellogik</title>
+		  	  Die Logik des Spiels ist in der Funktion flipCard() implementiert. Ein Spieler klickt nacheinander 2 Karten an, die jeweils aufgedeckt werden.
 		      Haben die gewählten Karten nicht das gleiche Bild, werden sie wieder umgedreht und der nächste Spieler ist
 		      an der Reihe. Sind beide Karten gleich, werden die Karten aus dem Spielfeld entfernt.
 		      In diesem Fall wird die Punkteanzahl für den aktuellen Spieler um 1 nach oben gesetzt und er darf weiter machen.
 		      Sobald er kein passendes Paar an Karten aufdeckt, ist der nächste Spieler an der Reihe.
-			</para>
+			</sect2>
+	  	</sect1>
+	    <sect1><title>Erstellung HTML Nodes mit XSLT</title>
+			  Konzeptionell lässt sich das Spiel in zwei Bereiche einteilen: Zum einen existiert die Lobby, in der die Highscore-Liste zu finden ist, neue Spiele erstellt und alte Spiele geladen werden können. Zum anderen gibt es die Darstellung für das Memory-Spiel selbst, mitsamt der Karten und dem User-Interface. Diese  Zweiteilung lässt sich in ähnlicher Weise auch in der Implementierung wiederfinden, wobei jedoch Unterschiede in der jeweiligen Umsetzung bestehen. Der statische Teil der Lobby liegt direkt als Datei(&quot;Lobby.xml&quot;) vor, und nutzt RestXQ um die übrigen Elemente einzufügen (Highscoreliste, Liste der gespeicherten Spiele). Auch wird die Instanz des XForms-Modell mittels RestXQ erzeugt. Für die Darstellung eines aktiven Spiels wird hingegen ein anderer Ansatz verfolgt, welcher sich auf XSL Transformationen stützt um aus den Spieldaten die aktuelle Sicht zu erzeugen. Da diese Umsetzung alle nötigen Informationen aus der Datenbank und der Session-ID bezieht, lässt sich das Laden und Speichern eines Spiels damit mit wenig zusätzlichem Aufwand realisieren. Um aus den Daten die Ausgabe mittels eines XSL Stylesheets zu erzeugen wird die Funktion &quot;xslt:transform($input, $stylesheet)&quot; auf die XML Daten angewendet. Diese verwendet als Default den Xalan Prozessor für die Transformationen, bzw. den Saxxon Prozessor, falls verfügbar. Mittels des hier verwendete Stylesheet(&quot;svg_creator.xsl&quot;) erzeugt dieser Prozessor das XHTML Dokument (inklusive XForms-Modell und Kontrollen), welches dem Nutzer anschließend durch den Browser als aktuelle Sicht angezeigt wird. Da XSLT unter anderem Schleifen unterstützt, lässt sich auf diese Weise eine eindeutige Submission für jede Karte erzeugen, aufgrund derer übermittelt wird, welche Karte vom Spieler selektiert wurde. Mittels &quot;xsl:choose&quot; kann eine Fallunterscheidung getroffen werden, um beispielsweise zu entscheiden, welche Seite einer Karte angezeigt werden soll. Auch die finale Zusammenfassung der Spiels, inklusive der Bekanntgabe der Gewinner erfogt mittels des Stylesheets. Die Neu-Erzeugung des Dokuments bringt für das Memory-Projekt einige Vorteile mit sich und zeigt akzeptable Performanz. Für größere Projekte sollten jedoch weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
+	  	</sect1>
+	  	<sect1><title>Kommunikation Client/Server</title>
+	  	</sect1>	  	
+	  	<sect1><title>Reflektion</title>
+	  	  XML basiert auf der Idee, eine universelle Darstellung zur Verfügung zu stellen, mittels derer
+			Anwendungen Daten austauschen können und dabei weiterhin durch einen einfach
+			nachzuvollziehenden, hierarchischen Aufbau menschen-lesbar zu bleiben. Damit hat sich XML, neben
+			vielen anderen Anwendungsbereichen, als eine Schlüsseltechnologie für das Internet erwiesen. Im
+			Verlauf des Praktikums wurde deutlich, dass gerade durch die wenigen Regeln welche an ein XML
+			Dokument gestellt werden eine Vielfalt von Anwedungsmöglichkeiten besteht. Da XML selbst dabei
+			nur zur Representation von Daten dient, ohne dem Nutzer eine umfangreiche Syntax aufzuzwingen,
+			existiert eine Vielzahl von Erweiterungen zur Manipulation und Verwaltung der Daten, welche
+			ihrerseits eine Vielfalt an Anwedungsbreichen eröffnen. Die Umsetzung des Projekts stellte dabei durch
+			die Vorgaben eine ganze Reihe neuer Herausforderungen bezüglich der Implementierung. So mussten
+			viele einfache Basisfunktionen des Spiels, durch vergleichsweise komplexe RestXQ- und XQuery
+			Funktionen nachgebildet werden. Auch das Auffinden von Fehlern im Code war weitaus komplizierter,
+			da in vielen Fällen wenig Informationen über die Ursache bereitgestellt werden konnten. Umso
+			wichtiger wurde ein guter Überblick über den Programmablauf und ein sehr feines iterieren des Codes.
+			Obwohl in diesem Projekt viele der Anforderungen künstlich gegeben waren, zeigten sich damit sehr
+			deutlich auch viele praktische Engineering-Aspekte, da auch in der Praxis die Freiheitsgrade der
+			Implementierung durch eine Vielzahl bestehender Requirements eingeschränkt sind.
 	  	</sect1>
 
  
