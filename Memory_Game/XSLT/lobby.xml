@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="http://localhost:8984/static/xsltforms/xsltforms.xsl" type="text/xsl"?>
+<?xsltforms-options debug="no"?>
+
+<!DOCTYPE html [
+  <!ENTITY nbsp "&#x00A0;">
+]>
+
+<!-- Define prefixes for the XHTML and the XForms namespaces. -->
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xf="http://www.w3.org/2002/xforms"
+>
+
+<head>
+  <title>Memory</title>
+
+<!-- Define an XForms model. -->
+
+<xf:model>
+  <xf:instance id="data_instance" xmlns="" src="http://localhost:8984/XSLT/welcomeScreenInfo"/>
+  <!-- Precondition: range is xs:integer >= 0 -->
+  <xf:submission id="newGameID" method="post" resource="http://localhost:8984/XSLT/newGameID"/>
+  <xf:submission id="newGameNewSubmit" method="post" resource="http://localhost:8984/XSLT/newGameNew" ref="/screenInfo" instance="data_instance"/>
+</xf:model>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<style type="text/css"><![CDATA[
+          @namespace xf url("http://www.w3.org/2002/xforms");
+		  .hsc_name {font-weight: bold;}
+		  .hsc_name::after {content:": ";}
+		  .label {display: inline-block; width: 150px; color: #3070B3;}
+body {
+	background: url("http://localhost:8984/static/data/background.jpg");
+	color: #606060;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	font-family: verdana, arial;
+}
+
+h2 {
+	font-size: 120%;
+	color: #3070B3;
+	}
+
+button {
+	border: 1px solid #808080;
+}
+
+input[type="text"] {
+	border: 1px solid #808080;
+	padding: 5px;
+	font-size: 16px;
+	margin: 5px 0;
+}
+
+select {
+	border: 1px solid #808080;
+	padding: 5px;
+	font-size: 16px;
+	margin: 5px 0;
+}
+
+button {
+	display: block;
+	margin: 5px 0 5px 150px;
+	padding: 5px;
+	font-size: 16px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.box_newgame, .box_loadgame, .box_highscores {
+background: #FFFFFF;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+padding: 15px;
+}
+
+.box_newgame, .box_loadgame {
+width: 400px;
+}
+.box_highscores {
+width: 200px;
+}
+
+timestamp {
+display: none;}
+
+player {
+display: block;}
+
+player name {
+font-weight: bold;}
+
+player points::before {
+	content: "(";
+	}
+player points::after {
+	content: ")";
+	}
+#header {
+width: 100%;
+margin: 0;
+padding: 20px 0;
+text-align: center;
+}
+#logo {
+width: 720px;
+}
+#links highscores* {font-weight: bold;}
+]]></style>
+</head>
+
+	
+<body>
+	<div id="header">
+	<img alt="TUM Memory" src="http://localhost:8984/static/data/logo.svg" id="logo"/>
+	</div>
+	
+  <xf:group ref=".">
+	<div class="wrapper">
+	<div class="box_newgame">
+	<h2>Neues Spiel starten</h2>
+	
+	<xf:input ref="player1"><xf:label class="label">Spieler 1</xf:label></xf:input>
+	<xf:input ref="player2"><xf:label class="label">Spieler 2</xf:label></xf:input>
+	<xf:input ref="player3"><xf:label class="label">Spieler 3</xf:label></xf:input>
+	<xf:input ref="player4"><xf:label class="label">Spieler 4</xf:label></xf:input>
+	
+	<xf:select1 ref="pairs">
+	<xf:label class="label">Kartenpaare</xf:label>
+                <xf:item>
+                    <xf:label>2</xf:label>
+                    <xf:value>2</xf:value> 
+                </xf:item>
+                <xf:item>
+                    <xf:label>3</xf:label>
+                    <xf:value>3</xf:value> 
+                </xf:item>
+                <xf:item>
+                    <xf:label>4</xf:label>
+                    <xf:value>4</xf:value> 
+                </xf:item>
+                <xf:item>
+                    <xf:label>5</xf:label>
+                    <xf:value>5</xf:value> 
+                </xf:item>
+                <xf:item>
+                    <xf:label>6</xf:label>
+                    <xf:value>6</xf:value> 
+                </xf:item>
+                <xf:item>
+                    <xf:label>7</xf:label>
+                    <xf:value>7</xf:value> 
+                </xf:item>
+                <xf:item>
+                    <xf:label>8</xf:label>
+                    <xf:value>8</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>9</xf:label>
+                    <xf:value>9</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>10</xf:label>
+                    <xf:value>10</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>11</xf:label>
+                    <xf:value>11</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>12</xf:label>
+                    <xf:value>12</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>13</xf:label>
+                    <xf:value>13</xf:value>
+				</xf:item>
+				<xf:item>
+                    <xf:label>14</xf:label>
+                    <xf:value>14</xf:value> 
+                </xf:item>
+				<xf:item>
+                    <xf:label>15</xf:label>
+                    <xf:value>15</xf:value> 
+                </xf:item>				
+        </xf:select1>
+	
+	<xf:submit submission="newGameNewSubmit">
+      <xf:label>Neues Spiel starten</xf:label>
+    </xf:submit>
+	
+	</div>
+	
+	
+	
+	<div class="box_loadgame">
+	<h2>Gespeichertes Spiel öffnen</h2>
+	<xf:select1 ref="id_chosen" appearance="minimal">
+	<xf:label class="label">Spiel</xf:label>
+		<xf:itemset nodeset="instance()/savedGames/game"> <!-- JOE: Argument von "instance" egal??-->
+				<xf:label ref="@name"></xf:label>
+				<xf:value ref="@id"/>
+		</xf:itemset>
+    </xf:select1>
+	
+	
+	<xf:submit submission="newGameID">
+      <xf:label>Spiel laden</xf:label>
+    </xf:submit>
+	
+	</div>
+
+    
+	<div class="box_highscores">
+	<h2>Highscores</h2>
+	<xf:repeat nodeset="highscores/player"> 
+            <div><xf:output class="hsc_name" ref="name"/><xf:output ref="points"/></div> 
+    </xf:repeat> 
+	</div>
+	</div>	
+
+  </xf:group>
+
+
+
+
+</body>
+</html>
