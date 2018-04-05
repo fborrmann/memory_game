@@ -13,8 +13,10 @@
    </articleinfo>
 
 	  	<sect1><title>Gliederung und Beschreibung der Ansichten</title>
-	      Das Spiel ist logisch in 2 Ebenen unterteilt. Zunächst eine 
-	      Lounge-Ansicht, in der Spielern offene Spiele angezeigt werden, sowie eine Highscore-Liste.
+	      Das Spiel ist logisch in 3 Ebenen unterteilt. Zunächst eine Anmeldeseite, auf welcher Spielern die Möglichkeit gegeben wird,
+	      sich mit Benutzername und Passwort anzumelden. Wurde noch kein Account mit den angegebenen Anmeldedaten erstellt,
+	      so wird dieser mit den Eingabewerten angelegt.
+	      Nach einem Klick auf Login wird der Spieler weitergeleitet zur Lounge-Ansicht, in der Spielern offene Spiele angezeigt werden, sowie eine Highscore-Liste.
 	      Die Lounge bietet die Möglichkeit, ein neues Spiel zu starten oder ein gespeichertes
 	      Spiel fortzusetzen. Beim Start eines neuen Spiels, kann der Spieler auswählen, mit wie vielen Karten,
 	      und Personen er spielen möchte. Jedem Mitspieler kann zudem ein Name gegeben werden.
@@ -22,7 +24,7 @@
 	      angezeigt, wobei die Karten zu beginn alle verdeckt liegen, wenn es sich um ein neu gestartetes Spiel handelt. Zudem werden
 	      die Spieler mit ihren aktuellen Punkten angezeigt, wobei der aktuelle Spieler farblich hervorgehoben ist.
 	      Das Spiel kann zu jedem Zeitpunkt unterbrochen werden. Dabei kehrt das Spiel wieder in
-	      die Lounge-Ansicht zurück. Das Spiel ist beendet, sobald alle Karten mit ihrem Bild nach oben liegen.
+	      die Lounge-Ansicht zurück. Das Spiel ist beendet, sobald alle Karten aufgedeckt wurden.
 	      Daraufhin wird anstelle der Karten das Ergebnis des Spiels angezeigt.
 	    </sect1>
 
@@ -37,23 +39,27 @@
 		  Auch die Funktionen speichern und abbrechen gehören zum Spiel, welche die Zustände des Spiels verändern.
 		    <figure><title>Klassendiagramm zum Spiel</title>
 		        <imageobject>
-		            <imagedata scale="60" fileref="input/images/class_diagram.png"/>
+		            <imagedata scale="34" fileref="input/images/class_diagram.png"/>
 		        </imageobject>
 		    </figure>
 	    </sect1>
 	    
 	    <sect1><title>Speicherung Spieldaten in Datenbanken</title>
-			  Für die Speicherung der Daten werden in BaseX zwei Datenbanken angelegt: &quot;XSLT&quot;, welches die Informationen über
+			  Für die Speicherung der Daten werden in BaseX drei Datenbanken angelegt: &quot;XSLT_members&quot;, in der die Anmeldedaten der Spieler gespeichert werden, &quot;XSLT&quot;, welches die Informationen über
 			  die erzeugten Spiele speichert und &quot;XSLT_highscores&quot; in welcher die Daten zur Bestenliste zu finden sind.
 			  Diese Trennung ist keine Notwendigkeit für die gegebene Implementierung, sondern soll rein zur logischen Trennung der Daten dienen.
 			  Eine logische Trennung der Daten ist sinnvoll, speziell wenn das Programm in der Zukfunft erweitert oder modifiziert wird.
-			  Anfangs müssen beide Dantebanken mittels entsprechenden XML-Dateien initialisiert werden, welche weitestgehend
+			  Anfangs müssen die Dantebanken mittels entsprechenden XML-Dateien initialisiert werden, welche weitestgehend
 			  aus einem leeren Wurzelknoten bestehen. Wird anschließend in der Anwendung ein neues Spiel erzeugt, so wird dieses
 			  mittels der XQuery Update Facility (bereitgestellt durch BaseX) als neuer Knoten in der XSLT Datenbank eingefügt.
 			  Auf ähnliche Weise erfolgt die Speicherung der Ergebnisse in der Bestenliste. Da diese jedoch nur die besten zehn Ergebnisse speichern soll,
 			  muss geprüft werden, ob ein Ergebniss in die Liste aufgenommen werden soll und ob dabei ein bestehender Wert verdrängt wird.
 			  Die entsprechende Logik wird in der Funktion &quot;g:insertHighsScores&quot;, sowie deren Hilfsfunktion &quot;g:updateHighScores&quot; umgesetzt,
 			  welche sich selbst der XQUF bedient um zunächst die alten Werte aus der Datenbank zu löschen und anschließend die neue Liste zurückzuschreiben.
+			  Die Speicherung der Anmeldedaten erfolgt mit der Funktion &quot;g:insertMember&quot;, welcher Benutzername und Passwort aus der Login-Seite 
+			  übergeben werden. Diese prüft mit Hilfe der Funktion &quot;g:checkMembers&quot;, ob ein Eintrag mit exakt diesen Daten bereits vorhanden
+			  ist. Besteht der Eintrag bereits, wird dessen spezifische ID zurückgegeben. Wenn nicht, wird diese angelegt und zusammen mit den 
+			  Anmeldedaten in der Datenbank gespeichert.
 	  	</sect1>
 	  	<sect1><title>Interne Funktionen</title>
 	  		<sect2><title>Erstellen neues Spiel</title>  
@@ -69,9 +75,9 @@
 	  		  Erst beim Durchlauf der Funktion spreadCards() werden den einzelnen Karten per Zufalls-Permutation Zeilen- und Spalten-Nummer zugewiesen.
 			</sect2>
 	  		<sect2><title>Anzeige Spiele und Highscores</title>  
-	  		  In der Lobby sind wie in Kapitel 1 bedchrieben, die gespeicherten Spiele, als auch die Highscores anzuzeigen.
+	  		  In der Lobby sind wie in Kapitel 1 beschrieben, die gespeicherten Spiele, als auch die Highscores anzuzeigen.
 	  		  Diese Anzeigen werden jeweils mit den Funktionen SavedGamesList() und HighScoreList() ermöglicht.
-	  		  Erstere läd alle gepeicherten Spiele aus der Datenbank und gibt für jedes dieser Spiele einen Knoten zurück, der ID und
+	  		  Erstere läd alle gepeicherten Spiele aus der Datenbank, die vom aktuell eingeloggten Spieler angelegt wurden, und gibt für jedes dieser Spiele einen Knoten zurück, der ID und
 	  		  die zusammengefassten Namen der Spieler des Spiels als Elemente enthält.
 	  		  In HighScoreList () wird ein Knoten "highscores" mit allen in der Datenbank XSLT_highscores enthaltenene Spielern befüllt,
 	  		  sortiert nach der Anzahl der Highscore-Punkte jedes enthaltenen Spielers.
@@ -82,12 +88,15 @@
 			  Die Methode flipCard erhält als Parameter die eindeutige ID der Karte im Spiel, ändert den Spielzustand in der Datenbank wie im Folgenden erklärt entsprechend ab und erstellt damit mithilfe des SVG-Creators die entsprechende GUI und gibt diese anschließend zurück. Da Änderungen an der Datenbank erst mit dem Beenden der Methode durchgeführt bzw. sichtbar sind, müssen entsprechende Änderungen sowohl in der Datenbank als auch in einer lokalen Kopie des Spiele-Datensatzes durchgeführt werden. Letzterer wird anschließend an den SVG-Creator übergeben.
 			  Zunächst wird überprüft, ob die Karte noch umgedreht auf dem Spielfeld liegt (@card_state=“hidden“). Trifft dies nicht zu, erfolgt keine Aktion und die Methode wird bereits wieder beendet, da die entsprechende Karte dementsprechend entweder aktuell bereits auf dem Spieltisch liegt oder zu einem bereits gefundenen Paar gehört und nicht mehr im Spiel ist.
 			  Da zu einem Spielzug das Aufdecken von zwei Spielkarten gehört, wird nun überprüft, ob es sich hierbei um die erste oder zweite Karte des Zuges handelt. Im ersten Fall (first_card=0) wird die aktuell umgedrehte Karte als erste Karte markiert, das Spiel-Element first_card also auf die ID der Karte gesetzt. Außerdem wird die aktuelle Karte umgedreht (@card_state=“flipped“).
-			  Wurde dagegen bereits eine Karte umgedreht, first_card also bereits mit einer Karten-ID belegt, wird geprüft, ob die beiden Karten ein Paar bilden, deren beiden group-Attribute also übereinstimmen. In diesem Fall werden dem aktuelle Spieler zwei Punkte gutgeschrieben, die Gruppen-ID im Spiel in lastpair gespeichert und beide Karten aus dem Spiel genommen. Hierfür werden ihre card_state-Attribute in der Datenbank auf „outofgame“ gesetzt, lokal auf „showandhide“, wodurch diese in der GUI zunächst aufgedeckt angezeigt und kurz darauf ausgeblendet werden. Außerdem muss an dieser Stelle überprüft werden, ob das Spiel hiermit bereits beendet ist. Dies geschieht durch die Überprüfung der Methode checkGameState, ob nun bereits alle Karten umgedreht wurden bzw. keine verdeckten Karten mehr auf dem Tisch liegen. Trifft dies zu, so wird der Zustand des Spiels (game_state) auf „finished“ gesetzt sowie die Gewinner des aktuellen Spiels ermittelt und im Spiele-Eintrag als <winners>-Element eingefügt. Außerdem werden über die Methode insertHighScores die Gewinner des Spiels bei Bedarf in die HighScores-Liste eingetragen.
+			  Wurde dagegen bereits eine Karte umgedreht, first_card also bereits mit einer Karten-ID belegt, wird geprüft, ob die beiden Karten ein Paar bilden, deren beiden group-Attribute also übereinstimmen. In diesem Fall werden dem aktuelle Spieler zwei Punkte gutgeschrieben, die Gruppen-ID im Spiel in lastpair gespeichert und beide Karten aus dem Spiel genommen.
+			  Hierfür werden ihre card_state-Attribute in der Datenbank auf „outofgame“ gesetzt, lokal auf „showandhide“, wodurch diese in der GUI zunächst aufgedeckt angezeigt und kurz darauf ausgeblendet werden. Außerdem muss an dieser Stelle überprüft werden, ob das Spiel hiermit bereits beendet ist. Dies geschieht durch die Überprüfung der Methode checkGameState, ob nun bereits alle Karten umgedreht wurden bzw. keine verdeckten Karten mehr auf dem Tisch liegen. Trifft dies zu, so wird der Zustand des Spiels (game_state) auf „finished“ gesetzt sowie die Gewinner des
+			  aktuellen Spiels ermittelt und im Spiele-Eintrag als "winners"-Element eingefügt.
+			  Außerdem werden über die Methode insertHighScores die Gewinner des Spiels bei Bedarf in die HighScores-Liste eingetragen.
 			  Sollte es sich bei den beiden umgedrehten Karten um kein Paar handeln, ist der nächste Spieler am Zug und active_player_id wird entsprechend gesetzt. „firstCard“ wird zurückgesetzt und die Karten werden wieder umgedreht, in der Datenbank card_state also auf „covered“ gesetzt und lokal zwecks Anzeige des Motivs der Karten und anschließendem Umdrehen auf „showandflip“.
 			  Der evtl. nun veränderte Eintrag zum aktuellen Spiel wird nun an den SVG-Creator übergeben, welcher die neue GUI erstellt. Anschließend wird diese zurückgegeben.
 			  <figure><title>Klassendiagramm zum Spiel</title>
 		        <imageobject>
-		            <imagedata scale="60" fileref="input/images/FlipCard.jpg"/>
+		            <imagedata scale="70" fileref="input/images/FlipCard.jpg"/>
 		        </imageobject>
 		      </figure>
 			</sect2>
