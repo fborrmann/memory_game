@@ -28,15 +28,12 @@
 	      Daraufhin wird anstelle der Karten das Ergebnis des Spiels angezeigt.
 	    </sect1>
 
-	    <sect1><title> Elemente eines Spiels</title>
-		  In der Spiele-Umgebung sind mehrere Elemente situationsabhängig und müssen damit definierte Zustände besitzen.
-		  Dies sind zunächst die Spiel-Karten. Ihre beiden Zustände sind verdeckt und offen. Ihre Anzahl und damit ihre Position auf
-		  dem Spielfeld muss zudem parametrisch beschrieben werden.
-		  Auch die Anzeige des aktuellen Spielers muss durch Zustände beschrieben werden. Ein Spieler kann an der Reihe sein oder nicht.
-		  Weiterhin ist die Anzahl der Spieler, sowie deren Punktestand parametrisch vorzuhalten.
-		  Zuletzt muss der Spielstand mit Zustandsdaten beschrieben werden. Dies beeinhaltet die Info, wie viele Karten bereits aufgedeckt wurden.
-		  Abhängig davon wird der Zustand definiert, ob das Spiel gespielt wird, oder ob es beendet ist, da alle Karten aufgedeckt wurden.
-		  Auch die Funktionen speichern und abbrechen gehören zum Spiel, welche die Zustände des Spiels verändern.
+	    <sect1><title> Struktureller Aufbau </title>
+	      Das Spiel ist logisch in die drei Bestandteile Model, View und Controller gegliedert. Dabei ist View die HTML-Oberfläche, welche dem
+	      Spieler im Browser zur Verfügung steht, und mit welcher er agieren kann. Der Controller beeinhaltet alle Funktionen, um den
+	      Input des Nutzers zu verarbeiten. Diese sind im Dokument controller.xqm gespeichert und sind mit dem Namespace &quot;c:&quot; versehen. 
+	      Um die Anfragen zu verarbeiten, interagiert der Controller als Schnittstelle mit dem Model. Dessen Methoden sind im Dokument methodsGame.xqm zusammengefasst, welche
+	      den Namespace &quot;g:&quot; haben. 
 		    <figure><title>Klassendiagramm zum Spiel</title>
 		        <imageobject>
 		            <imagedata scale="34" fileref="input/images/class_diagram.png"/>
@@ -64,7 +61,7 @@
 	  	<sect1><title>Interne Funktionen</title>
 	  		<sect2><title>Erstellen neues Spiel</title>  
 	  		  Wie in Kapitel 1 beschrieben, kann in der Lobby ein neues Spiel gestartet werden.
-	  		  Die eingegebenen Daten (Spielernamen, Kartenanzahl) werden danach zusammen mit dem Zeitstempel als ID der 
+	  		  Die eingegebenen Daten (Spielernamen, Kartenanzahl) werden danach zusammen mit einer Zufallszahl als ID der 
 	  		  Funktion newGameXML übergeben. In dieser wird das Spiel-Element, wie in Kapitel 2 beschrieben, aufgebaut. 
 	  		  Die übergebene ID wird zur ID des Spiels, per Default ist der erste eingetragene Spieler der erste aktive Spieler
 	  		  und für jeden eingetragenen Spieler-Namen wird ein Spieler-Knoten mit dem entsprechenden Namen und einer Punktezahl von Null angelegt.
@@ -84,19 +81,19 @@
 	  		  Diese Knoten werden dann in der lobby.xml ausgelesen und der Reihe nach angezeigt.
 			</sect2>
 	  		<sect2><title>Spiellogik</title>
-		      Eine zentrale Rolle im Memoryspiel und somit auch der Programmierung spielt die Funktion flipCard. Die einzige Handlungsmöglichkeit für die Spieler eines Memoryspiels ist es, eine Karte umzudrehen, wodurch gleichzeitig der weitere Spielverlauf beeinflusst wird.
-			  Die Methode flipCard erhält als Parameter die eindeutige ID der Karte im Spiel, ändert den Spielzustand in der Datenbank wie im Folgenden erklärt entsprechend ab und erstellt damit mithilfe des SVG-Creators die entsprechende GUI und gibt diese anschließend zurück. Da Änderungen an der Datenbank erst mit dem Beenden der Methode durchgeführt bzw. sichtbar sind, müssen entsprechende Änderungen sowohl in der Datenbank als auch in einer lokalen Kopie des Spiele-Datensatzes durchgeführt werden. Letzterer wird anschließend an den SVG-Creator übergeben.
-			  Zunächst wird überprüft, ob die Karte noch umgedreht auf dem Spielfeld liegt (@card_state=“hidden“). Trifft dies nicht zu, erfolgt keine Aktion und die Methode wird bereits wieder beendet, da die entsprechende Karte dementsprechend entweder aktuell bereits auf dem Spieltisch liegt oder zu einem bereits gefundenen Paar gehört und nicht mehr im Spiel ist.
-			  Da zu einem Spielzug das Aufdecken von zwei Spielkarten gehört, wird nun überprüft, ob es sich hierbei um die erste oder zweite Karte des Zuges handelt. Im ersten Fall (first_card=0) wird die aktuell umgedrehte Karte als erste Karte markiert, das Spiel-Element first_card also auf die ID der Karte gesetzt. Außerdem wird die aktuelle Karte umgedreht (@card_state=“flipped“).
-			  Wurde dagegen bereits eine Karte umgedreht, first_card also bereits mit einer Karten-ID belegt, wird geprüft, ob die beiden Karten ein Paar bilden, deren beiden group-Attribute also übereinstimmen. In diesem Fall werden dem aktuelle Spieler zwei Punkte gutgeschrieben, die Gruppen-ID im Spiel in lastpair gespeichert und beide Karten aus dem Spiel genommen.
-			  Hierfür werden ihre card_state-Attribute in der Datenbank auf „outofgame“ gesetzt, lokal auf „showandhide“, wodurch diese in der GUI zunächst aufgedeckt angezeigt und kurz darauf ausgeblendet werden. Außerdem muss an dieser Stelle überprüft werden, ob das Spiel hiermit bereits beendet ist. Dies geschieht durch die Überprüfung der Methode checkGameState, ob nun bereits alle Karten umgedreht wurden bzw. keine verdeckten Karten mehr auf dem Tisch liegen. Trifft dies zu, so wird der Zustand des Spiels (game_state) auf „finished“ gesetzt sowie die Gewinner des
-			  aktuellen Spiels ermittelt und im Spiele-Eintrag als "winners"-Element eingefügt.
-			  Außerdem werden über die Methode insertHighScores die Gewinner des Spiels bei Bedarf in die HighScores-Liste eingetragen.
-			  Sollte es sich bei den beiden umgedrehten Karten um kein Paar handeln, ist der nächste Spieler am Zug und active_player_id wird entsprechend gesetzt. „firstCard“ wird zurückgesetzt und die Karten werden wieder umgedreht, in der Datenbank card_state also auf „covered“ gesetzt und lokal zwecks Anzeige des Motivs der Karten und anschließendem Umdrehen auf „showandflip“.
-			  Der evtl. nun veränderte Eintrag zum aktuellen Spiel wird nun an den SVG-Creator übergeben, welcher die neue GUI erstellt. Anschließend wird diese zurückgegeben.
-			  <figure><title>Klassendiagramm zum Spiel</title>
+		      <para>Eine zentrale Rolle im Memoryspiel und somit auch der Programmierung spielt die Funktion flipCard. Die einzige Handlungsmöglichkeit für die Spieler eines Memoryspiels ist es, eine Karte umzudrehen, wodurch gleichzeitig der weitere Spielverlauf beeinflusst wird.</para>
+			  <para>Die Methode flipCard erhält als Parameter die eindeutige ID der Karte im Spiel, ändert den Spielzustand in der Datenbank wie im Folgenden erklärt entsprechend ab und erstellt damit mithilfe des SVG-Creators die entsprechende GUI und gibt diese anschließend zurück. Da Änderungen an der Datenbank erst mit dem Beenden der Methode durchgeführt bzw. sichtbar sind, müssen entsprechende Änderungen sowohl in der Datenbank als auch in einer lokalen Kopie des Spiele-Datensatzes durchgeführt werden. Letzterer wird anschließend an den SVG-Creator übergeben.</para>
+			  <para>Zunächst wird überprüft, ob die Karte noch umgedreht auf dem Spielfeld liegt (@card_state=“hidden“). Trifft dies nicht zu, erfolgt keine Aktion und die Methode wird bereits wieder beendet, da die entsprechende Karte dementsprechend entweder aktuell bereits auf dem Spieltisch liegt oder zu einem bereits gefundenen Paar gehört und nicht mehr im Spiel ist.</para>
+			  <para>Da zu einem Spielzug das Aufdecken von zwei Spielkarten gehört, wird nun überprüft, ob es sich hierbei um die erste oder zweite Karte des Zuges handelt. Im ersten Fall (first_card=0) wird die aktuell umgedrehte Karte als erste Karte markiert, das Spiel-Element first_card also auf die ID der Karte gesetzt. Außerdem wird die aktuelle Karte umgedreht (@card_state=“flipped“).</para>
+			  <para>Wurde dagegen bereits eine Karte umgedreht, first_card also bereits mit einer Karten-ID belegt, wird geprüft, ob die beiden Karten ein Paar bilden, deren beiden group-Attribute also übereinstimmen. In diesem Fall werden dem aktuelle Spieler zwei Punkte gutgeschrieben, die Gruppen-ID im Spiel in lastpair gespeichert und beide Karten aus dem Spiel genommen.</para>
+			  <para>Hierfür werden ihre card_state-Attribute in der Datenbank auf „outofgame“ gesetzt, lokal auf „showandhide“, wodurch diese in der GUI zunächst aufgedeckt angezeigt und kurz darauf ausgeblendet werden. Außerdem muss an dieser Stelle überprüft werden, ob das Spiel hiermit bereits beendet ist. Dies geschieht durch die Überprüfung der Methode checkGameState, ob nun bereits alle Karten umgedreht wurden bzw. keine verdeckten Karten mehr auf dem Tisch liegen. Trifft dies zu, so wird der Zustand des Spiels (game_state) auf „finished“ gesetzt sowie die Gewinner des
+			  aktuellen Spiels ermittelt und im Spiele-Eintrag als "winners"-Element eingefügt.</para>
+			  <para>Außerdem werden über die Methode insertHighScores die Gewinner des Spiels bei Bedarf in die HighScores-Liste eingetragen.</para>
+			  <para>Sollte es sich bei den beiden umgedrehten Karten um kein Paar handeln, ist der nächste Spieler am Zug und active_player_id wird entsprechend gesetzt. „firstCard“ wird zurückgesetzt und die Karten werden wieder umgedreht, in der Datenbank card_state also auf „covered“ gesetzt und lokal zwecks Anzeige des Motivs der Karten und anschließendem Umdrehen auf „showandflip“.</para>
+			 <para> Der evtl. nun veränderte Eintrag zum aktuellen Spiel wird nun an den SVG-Creator übergeben, welcher die neue GUI erstellt. Anschließend wird diese zurückgegeben.</para>
+			  <figure><title>Kontrollflussgraph zur Funktion</title>
 		        <imageobject>
-		            <imagedata scale="70" fileref="input/images/FlipCard.jpg"/>
+		            <imagedata scale="60" fileref="input/images/FlipCard.jpg"/>
 		        </imageobject>
 		      </figure>
 			</sect2>
