@@ -18,14 +18,17 @@
 	      so wird dieser mit den Eingabewerten angelegt.
 	      Nach einem Klick auf Login wird der Spieler weitergeleitet zur Lounge-Ansicht, in der Spielern offene Spiele angezeigt werden, sowie eine Highscore-Liste.
 	      Die Lounge bietet die Möglichkeit, ein neues Spiel zu starten oder ein gespeichertes
-	      Spiel fortzusetzen. Beim Start eines neuen Spiels, kann der Spieler auswählen, mit wie vielen Karten,
+	      Spiel zu laden und fortzusetzen. Beim Start eines neuen Spiels, kann der Spieler auswählen, mit wie vielen Kartenpaaren,
 	      und Personen er spielen möchte. Jedem Mitspieler kann zudem ein Name gegeben werden.
 	      Sobald ein Spiel gestartet wurde, wird die zweite Ebene, ein Spielfeld mit der gewünschten Kartenanzahl
 	      angezeigt, wobei die Karten zu beginn alle verdeckt liegen, wenn es sich um ein neu gestartetes Spiel handelt. Zudem werden
 	      die Spieler mit ihren aktuellen Punkten angezeigt, wobei der aktuelle Spieler farblich hervorgehoben ist.
-	      Das Spiel kann zu jedem Zeitpunkt unterbrochen werden. Dabei kehrt das Spiel wieder in
+        Während des Spielens, wird diese Benutzeroberfläche nicht verlassen.
+        Die Interaktionsmöglichkeiten in dieser Ansicht sind das Umdecken von Karten sowie die manuelle Spielunterbrechung.
+        Diese ist zu jedem Zeitpunkt möglich. Dabei kehrt das Spiel wieder in
 	      die Lounge-Ansicht zurück. Das Spiel ist beendet, sobald alle Karten aufgedeckt wurden.
-	      Daraufhin wird anstelle der Karten das Ergebnis des Spiels angezeigt.
+	      Daraufhin wird anstelle der Karten eine Benutzeroberfläche mit dem Ergebnis des Spiels angezeigt.
+        Hier ist es wieder möglich ein neues Spiel aus der Lounge-Ansicht zu starten.
 	    </sect1>
 
 	    <sect1><title> Struktureller Aufbau </title>
@@ -34,6 +37,10 @@
 	      Input des Nutzers zu verarbeiten. Diese sind im Dokument controller.xqm gespeichert und sind mit dem Namespace &quot;c:&quot; versehen.
 	      Um die Anfragen zu verarbeiten, interagiert der Controller als Schnittstelle mit dem Model. Dessen Methoden sind im Dokument methodsGame.xqm zusammengefasst, welche
 	      den Namespace &quot;g:&quot; haben.
+        <para>In Hinblick auf Klassen ist das Spiel wie in dem folgenden UML-Klassendiagramm aufgebaut. Ein Member mit Login-Daten und einer ID kann mehrere Spiele haben.
+        Ein Spiel wiederum beinhaltet alle Daten und Methoden die notwendig sind für die Verwaltung des Spieles. Zudem ist die Member ID im Attribut owner gespeichert.
+        Ein Spiel besteht aus mehreren Karten und ggf. mehreren Spielern. Die Karten-Klasse beinhalten alle Attribute zur Beschreibung individueller Karten sowie Funktionen zur Kartenlogik.
+        Die Spieler Klasse beinhaltet die Id, Name und Punktzahl eines Spielers und stellt die Funktion bereit, welche ermittelt ob ein Spieler ein Gewinner ist oder nicht. </para>
 		    <figure><title>Klassendiagramm zum Spiel</title>
 		        <imageobject>
 		            <imagedata scale="34" fileref="input/images/class_diagram.png"/>
