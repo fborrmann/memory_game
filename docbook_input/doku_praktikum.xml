@@ -85,7 +85,7 @@
 	  		  die zusammengefassten Namen der Spieler des Spiels als Elemente enthält.
 	  		  In <emphasis role="italic">HighScoreList()</emphasis> wird ein Knoten &quot;highscores&quot; mit allen in der Datenbank <emphasis role="italic">XSLT_highscores</emphasis> enthaltenene Spielern befüllt,
 	  		  sortiert nach der Anzahl der Highscore-Punkte jedes enthaltenen Spielers.
-	  		  Diese Knoten werden dann in der <emphasis role="italic">lobby.xml<emphasis> ausgelesen und der Reihe nach angezeigt.
+	  		  Diese Knoten werden dann in der <emphasis role="italic">lobby.xml</emphasis> ausgelesen und der Reihe nach angezeigt.
 			</sect2>
 	  		<sect2><title>Spiellogik</title>
 		      <para>Eine zentrale Rolle im Memoryspiel und somit auch der Programmierung spielt die Funktion <emphasis role="italic">flipCard()</emphasis>. Die einzige Handlungsmöglichkeit für die Spieler eines Memoryspiels ist es, eine Karte umzudrehen, wodurch gleichzeitig der weitere Spielverlauf beeinflusst wird.</para>
@@ -100,7 +100,7 @@
 			 <para> Der eventuell nun veränderte Eintrag zum aktuellen Spiel wird nun an den SVG-Creator übergeben, welcher die neue GUI erstellt. Anschließend wird diese zurückgegeben.</para>
 			  <figure><title>Kontrollflussgraph zur Funktion</title>
 		        <imageobject>
-		            <imagedata scale="60" fileref="input/images/FlipCard.jpg"/>
+		            <imagedata scale="64" fileref="input/images/FlipCard.jpg"/>
 		        </imageobject>
 		      </figure>
 			</sect2>
@@ -125,18 +125,16 @@
 			  weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
 	  	</sect1>
 	  	<sect1><title>Kommunikation Client/Server</title>
-      Die Requests und Responses zwischen Client und Server sind im folgenden Interaktionsdiagram graphisch am Beispiel der <emphasis role="italic">flipcard()</emphasis> Methode dargestellt.
+      		Die Requests und Responses zwischen Client und Server sind im folgenden Interaktionsdiagram graphisch am Beispiel der <emphasis role="italic">flipcard()</emphasis> Methode dargestellt.
+      		Die ursprüngliche Interaktion erfolgt am Eingabefenster welches mit XForms realisiert wird.
+	        Die Kommunikation zum Server erfolgt dann duch den Controller, welcher die dazu erforderlichen RestXQ Funktionen beinhaltet.
+	        Die resultierenden Methodenaufrufe werden mit Hilfe von XQuery über URL's ausgeführt.
+      		<figure><title>Interaktionsdiagram für flip_card() Methode</title>
+		          <imageobject>
+		              <imagedata scale="38" fileref="input/images/interaktionsdiagram.png"/>
+		          </imageobject>
+        	</figure>
 	  	</sect1>
-      <figure><title>Interaktionsdiagram für flip_card() Methode</title>
-          <imageobject>
-              <imagedata scale="60" fileref="input/images/interaktionsdiagram.jpg"/>
-          </imageobject>
-        </figure>
-        <para>
-        Die ursprüngliche Interaktion erfolgt am Eingabefenster welches mit XForms realisiert wird.
-        Die Kommunikation zum Server erfolgt dann duch den Controller, welcher die dazu erforderlichen RestXQ Funktionen beinhaltet.
-        Die resultierenden Methodenaufrufe werden mit Hilfe von XSLT über URL's ausgeführt.
-      </para>
 	  	<sect1><title>Reflektion</title>
 	  	  XML basiert auf der Idee, eine universelle Darstellung zur Verfügung zu stellen, mittels derer
 			Anwendungen Daten austauschen können und dabei weiterhin durch einen einfach
