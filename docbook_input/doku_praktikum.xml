@@ -125,12 +125,18 @@
 			  weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
 	  	</sect1>
 	  	<sect1><title>Kommunikation Client/Server</title>
+      Die Requests und Responses zwischen Client und Server sind im folgenden Interaktionsdiagram graphisch am Beispiel der flipcard() Methode dargestellt.
 	  	</sect1>
       <figure><title>Interaktionsdiagram für flip_card() Methode</title>
           <imageobject>
               <imagedata scale="60" fileref="input/images/interaktionsdiagram.jpg"/>
           </imageobject>
         </figure>
+        <para>
+        Die ursprüngliche Interaktion erfolgt am Eingabefenster welches mit XForms realisiert wird.
+        Die Kommunikation zum Server erfolgt dann duch den Controller, welcher die dazu erforderlichen RestXQ Funktionen beinhaltet.
+        Die resultierenden Methodenaufrufe werden mit Hilfe von XSLT über URL's ausgeführt.
+      </para>
 	  	<sect1><title>Reflektion</title>
 	  	  XML basiert auf der Idee, eine universelle Darstellung zur Verfügung zu stellen, mittels derer
 			Anwendungen Daten austauschen können und dabei weiterhin durch einen einfach
@@ -149,6 +155,17 @@
 			Obwohl in diesem Projekt viele der Anforderungen künstlich gegeben waren, zeigten sich damit sehr
 			deutlich auch viele praktische Engineering-Aspekte, da auch in der Praxis die Freiheitsgrade der
 			Implementierung durch eine Vielzahl bestehender Requirements eingeschränkt sind.
+      <para>
+      Die Organisation und Betreuung im Praktikum war sehr übersichtlich und sinnvoll gestaltet.
+      Die verschiedenen Themengebiete wurden logisch auf die 5 Blätter aufgeteilt und die Aufgaben waren gut geignet um die Konzepte zu verinnerlichen.
+      Die Balance zwischen Einarbeitungsphase und Eigenarbeitsphase ermöglichte es, so wie die theoretische als auch die praktische Seite von XML zu erlernen.
+      </para>
+      <para>
+      Die Organisation der Arbeit im Team verlief ebenfalls reibungslos.
+      Bei circa jede 2 Wochen stattfindenden Treffen wurden konkrete Meilensteile besprochen und gesetzt; sowie für das Projekt an sich als auch für jedes einzelne Teammitglied.
+      Lösungen zu konkreten Aufgabenteilen wurden immer zusammen durchgesprochen und es wurde immer gegenseitiges Feedback gegeben.
+      Die Kommunikation erfolgte über eine Whatsapp Gruppe und Slack, der Datenaustausch über GitHub.
+      </para>
 	  	</sect1>
 
 
