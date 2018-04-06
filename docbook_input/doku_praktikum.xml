@@ -3,7 +3,7 @@
 <article>
   <articleinfo>
     <title>Dokumentation zum Praktikum XML-Technologie</title>
-        
+
     <author>
       <firstname>Group</firstname>
       <surname>XSLT</surname>
@@ -31,16 +31,16 @@
 	    <sect1><title> Struktureller Aufbau </title>
 	      Das Spiel ist logisch in die drei Bestandteile Model, View und Controller gegliedert. Dabei ist View die HTML-Oberfläche, welche dem
 	      Spieler im Browser zur Verfügung steht, und mit welcher er agieren kann. Der Controller beeinhaltet alle Funktionen, um den
-	      Input des Nutzers zu verarbeiten. Diese sind im Dokument controller.xqm gespeichert und sind mit dem Namespace &quot;c:&quot; versehen. 
+	      Input des Nutzers zu verarbeiten. Diese sind im Dokument controller.xqm gespeichert und sind mit dem Namespace &quot;c:&quot; versehen.
 	      Um die Anfragen zu verarbeiten, interagiert der Controller als Schnittstelle mit dem Model. Dessen Methoden sind im Dokument methodsGame.xqm zusammengefasst, welche
-	      den Namespace &quot;g:&quot; haben. 
+	      den Namespace &quot;g:&quot; haben.
 		    <figure><title>Klassendiagramm zum Spiel</title>
 		        <imageobject>
 		            <imagedata scale="34" fileref="input/images/class_diagram.png"/>
 		        </imageobject>
 		    </figure>
 	    </sect1>
-	    
+
 	    <sect1><title>Speicherung Spieldaten in Datenbanken</title>
 			  Für die Speicherung der Daten werden in BaseX drei Datenbanken angelegt: &quot;XSLT_members&quot;, in der die Anmeldedaten der Spieler gespeichert werden, &quot;XSLT&quot;, welches die Informationen über
 			  die erzeugten Spiele speichert und &quot;XSLT_highscores&quot; in welcher die Daten zur Bestenliste zu finden sind.
@@ -53,25 +53,25 @@
 			  muss geprüft werden, ob ein Ergebniss in die Liste aufgenommen werden soll und ob dabei ein bestehender Wert verdrängt wird.
 			  Die entsprechende Logik wird in der Funktion &quot;g:insertHighsScores&quot;, sowie deren Hilfsfunktion &quot;g:updateHighScores&quot; umgesetzt,
 			  welche sich selbst der XQUF bedient um zunächst die alten Werte aus der Datenbank zu löschen und anschließend die neue Liste zurückzuschreiben.
-			  Die Speicherung der Anmeldedaten erfolgt mit der Funktion &quot;g:insertMember&quot;, welcher Benutzername und Passwort aus der Login-Seite 
+			  Die Speicherung der Anmeldedaten erfolgt mit der Funktion &quot;g:insertMember&quot;, welcher Benutzername und Passwort aus der Login-Seite
 			  übergeben werden. Diese prüft mit Hilfe der Funktion &quot;g:checkMembers&quot;, ob ein Eintrag mit exakt diesen Daten bereits vorhanden
-			  ist. Besteht der Eintrag bereits, wird dessen spezifische ID zurückgegeben. Wenn nicht, wird diese angelegt und zusammen mit den 
+			  ist. Besteht der Eintrag bereits, wird dessen spezifische ID zurückgegeben. Wenn nicht, wird diese angelegt und zusammen mit den
 			  Anmeldedaten in der Datenbank gespeichert.
 	  	</sect1>
 	  	<sect1><title>Interne Funktionen</title>
-	  		<sect2><title>Erstellen neues Spiel</title>  
+	  		<sect2><title>Erstellen neues Spiel</title>
 	  		  Wie in Kapitel 1 beschrieben, kann in der Lobby ein neues Spiel gestartet werden.
-	  		  Die eingegebenen Daten (Spielernamen, Kartenanzahl) werden danach zusammen mit einer Zufallszahl als ID der 
-	  		  Funktion newGameXML übergeben. In dieser wird das Spiel-Element, wie in Kapitel 2 beschrieben, aufgebaut. 
+	  		  Die eingegebenen Daten (Spielernamen, Kartenanzahl) werden danach zusammen mit einer Zufallszahl als ID der
+	  		  Funktion newGameXML übergeben. In dieser wird das Spiel-Element, wie in Kapitel 2 beschrieben, aufgebaut.
 	  		  Die übergebene ID wird zur ID des Spiels, per Default ist der erste eingetragene Spieler der erste aktive Spieler
 	  		  und für jeden eingetragenen Spieler-Namen wird ein Spieler-Knoten mit dem entsprechenden Namen und einer Punktezahl von Null angelegt.
 	  		  Um für die gewählte Anzahl an Kartenpaaren die entsprechende Menge an Karten-Knoten zu erzeugen, wird innerhalb von newGameXML() die Methode
-	  		  spreadCards() aufgerufen. Bei deren Aufruf werden zunächst abhängig von der Kartenanzahl die gewünschte Menge an Karten-Knoten 
+	  		  spreadCards() aufgerufen. Bei deren Aufruf werden zunächst abhängig von der Kartenanzahl die gewünschte Menge an Karten-Knoten
 	  		  mit korrekter ID und Paar-Nummer mit Hilfe der Funktion createCards() erzeugt und spreadCards() zusammen mit der Spalten- und Zeilenanzahl als Input übergeben.
 	  		  Der Wert der Positions-Elemente ist jedoch für alle Karten zunächst noch Null.
 	  		  Erst beim Durchlauf der Funktion spreadCards() werden den einzelnen Karten per Zufalls-Permutation Zeilen- und Spalten-Nummer zugewiesen.
 			</sect2>
-	  		<sect2><title>Anzeige Spiele und Highscores</title>  
+	  		<sect2><title>Anzeige Spiele und Highscores</title>
 	  		  In der Lobby sind wie in Kapitel 1 beschrieben, die gespeicherten Spiele, als auch die Highscores anzuzeigen.
 	  		  Diese Anzeigen werden jeweils mit den Funktionen SavedGamesList() und HighScoreList() ermöglicht.
 	  		  Erstere läd alle gepeicherten Spiele aus der Datenbank, die vom aktuell eingeloggten Spieler angelegt wurden, und gibt für jedes dieser Spiele einen Knoten zurück, der ID und
@@ -118,7 +118,12 @@
 			  weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
 	  	</sect1>
 	  	<sect1><title>Kommunikation Client/Server</title>
-	  	</sect1>	  	
+	  	</sect1>
+      <figure><title>Interaktionsdiagram für flip_card() Methode</title>
+          <imageobject>
+              <imagedata scale="60" fileref="input/images/interaktionsdiagram.jpg"/>
+          </imageobject>
+        </figure>
 	  	<sect1><title>Reflektion</title>
 	  	  XML basiert auf der Idee, eine universelle Darstellung zur Verfügung zu stellen, mittels derer
 			Anwendungen Daten austauschen können und dabei weiterhin durch einen einfach
@@ -139,6 +144,6 @@
 			Implementierung durch eine Vielzahl bestehender Requirements eingeschränkt sind.
 	  	</sect1>
 
- 
+
 
 </article>
