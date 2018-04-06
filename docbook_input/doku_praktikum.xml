@@ -34,12 +34,12 @@
 	    <sect1><title> Struktureller Aufbau </title>
 	      Das Spiel ist logisch in die drei Bestandteile Model, View und Controller gegliedert. Dabei ist View die HTML-Oberfläche, welche dem
 	      Spieler im Browser zur Verfügung steht, und mit welcher er agieren kann. Der Controller beeinhaltet alle Funktionen, um den
-	      Input des Nutzers zu verarbeiten. Diese sind im Dokument controller.xqm gespeichert und sind mit dem Namespace &quot;c:&quot; versehen.
-	      Um die Anfragen zu verarbeiten, interagiert der Controller als Schnittstelle mit dem Model. Dessen Methoden sind im Dokument methodsGame.xqm zusammengefasst, welche
+	      Input des Nutzers zu verarbeiten. Diese sind im Dokument <emphasis role="italic">controller.xqm</emphasis> gespeichert und sind mit dem Namespace &quot;c:&quot; versehen.
+	      Um die Anfragen zu verarbeiten, interagiert der Controller als Schnittstelle mit dem Model. Dessen Methoden sind im Dokument <emphasis role="italic">methodsGame.xqm</emphasis> zusammengefasst, welche
 	      den Namespace &quot;g:&quot; haben.
         <para>In Hinblick auf Klassen ist das Spiel wie in dem folgenden UML-Klassendiagramm aufgebaut. Ein Member mit Login-Daten und einer ID kann mehrere Spiele haben.
-        Ein Spiel wiederum beinhaltet alle Daten und Methoden die notwendig sind für die Verwaltung des Spieles. Zudem ist die Member ID im Attribut owner gespeichert.
-        Ein Spiel besteht aus mehreren Karten und ggf. mehreren Spielern. Die Karten-Klasse beinhalten alle Attribute zur Beschreibung individueller Karten sowie Funktionen zur Kartenlogik.
+        Ein Spiel wiederum beinhaltet alle Daten und Methoden die notwendig sind für die Verwaltung des Spieles. Zudem ist die Member ID im Attribut <emphasis role="italic">owner</emphasis> gespeichert.
+        Ein Spiel besteht aus mehreren Karten und gegebenfalls mehreren Spielern. Die Karten-Klasse beinhalten alle Attribute zur Beschreibung individueller Karten sowie Funktionen zur Kartenlogik.
         Die Spieler Klasse beinhaltet die Id, Name und Punktzahl eines Spielers und stellt die Funktion bereit, welche ermittelt ob ein Spieler ein Gewinner ist oder nicht. </para>
 		    <figure><title>Klassendiagramm zum Spiel</title>
 		        <imageobject>
@@ -49,8 +49,8 @@
 	    </sect1>
 
 	    <sect1><title>Speicherung Spieldaten in Datenbanken</title>
-			  Für die Speicherung der Daten werden in BaseX drei Datenbanken angelegt: &quot;XSLT_members&quot;, in der die Anmeldedaten der Spieler gespeichert werden, &quot;XSLT&quot;, welches die Informationen über
-			  die erzeugten Spiele speichert und &quot;XSLT_highscores&quot; in welcher die Daten zur Bestenliste zu finden sind.
+			  Für die Speicherung der Daten werden in BaseX drei Datenbanken angelegt: <emphasis role="italic">XSLT_members</emphasis>;, in der die Anmeldedaten der Spieler gespeichert werden, <emphasis role="italic">XSLT</emphasis>, welches die Informationen über
+			  die erzeugten Spiele speichert und <emphasis role="italic">XSLT_highscores</emphasis> in welcher die Daten zur Bestenliste zu finden sind.
 			  Diese Trennung ist keine Notwendigkeit für die gegebene Implementierung, sondern soll rein zur logischen Trennung der Daten dienen.
 			  Eine logische Trennung der Daten ist sinnvoll, speziell wenn das Programm in der Zukfunft erweitert oder modifiziert wird.
 			  Anfangs müssen die Dantebanken mittels entsprechenden XML-Dateien initialisiert werden, welche weitestgehend
@@ -58,10 +58,10 @@
 			  mittels der XQuery Update Facility (bereitgestellt durch BaseX) als neuer Knoten in der XSLT Datenbank eingefügt.
 			  Auf ähnliche Weise erfolgt die Speicherung der Ergebnisse in der Bestenliste. Da diese jedoch nur die besten zehn Ergebnisse speichern soll,
 			  muss geprüft werden, ob ein Ergebniss in die Liste aufgenommen werden soll und ob dabei ein bestehender Wert verdrängt wird.
-			  Die entsprechende Logik wird in der Funktion &quot;g:insertHighsScores&quot;, sowie deren Hilfsfunktion &quot;g:updateHighScores&quot; umgesetzt,
+			  Die entsprechende Logik wird in der Funktion <emphasis role="italic">g:insertHighsScores()</emphasis>, sowie deren Hilfsfunktion <emphasis role="italic">g:updateHighScores()</emphasis> umgesetzt,
 			  welche sich selbst der XQUF bedient um zunächst die alten Werte aus der Datenbank zu löschen und anschließend die neue Liste zurückzuschreiben.
-			  Die Speicherung der Anmeldedaten erfolgt mit der Funktion &quot;g:insertMember&quot;, welcher Benutzername und Passwort aus der Login-Seite
-			  übergeben werden. Diese prüft mit Hilfe der Funktion &quot;g:checkMembers&quot;, ob ein Eintrag mit exakt diesen Daten bereits vorhanden
+			  Die Speicherung der Anmeldedaten erfolgt mit der Funktion <emphasis role="italic">g:insertMember()</emphasis>, welcher Benutzername und Passwort aus der Login-Seite
+			  übergeben werden. Diese prüft mit Hilfe der Funktion <emphasis role="italic">g:checkMembers()</emphasis>, ob ein Eintrag mit exakt diesen Daten bereits vorhanden
 			  ist. Besteht der Eintrag bereits, wird dessen spezifische ID zurückgegeben. Wenn nicht, wird diese angelegt und zusammen mit den
 			  Anmeldedaten in der Datenbank gespeichert.
 	  	</sect1>
@@ -69,35 +69,35 @@
 	  		<sect2><title>Erstellen neues Spiel</title>
 	  		  Wie in Kapitel 1 beschrieben, kann in der Lobby ein neues Spiel gestartet werden.
 	  		  Die eingegebenen Daten (Spielernamen, Kartenanzahl) werden danach zusammen mit einer Zufallszahl als ID der
-	  		  Funktion newGameXML übergeben. In dieser wird das Spiel-Element, wie in Kapitel 2 beschrieben, aufgebaut.
+	  		  Funktion <emphasis role="italic">newGameXML()</emphasis> übergeben. In dieser wird das Spiel-Element, wie in Kapitel 2 beschrieben, aufgebaut.
 	  		  Die übergebene ID wird zur ID des Spiels, per Default ist der erste eingetragene Spieler der erste aktive Spieler
 	  		  und für jeden eingetragenen Spieler-Namen wird ein Spieler-Knoten mit dem entsprechenden Namen und einer Punktezahl von Null angelegt.
-	  		  Um für die gewählte Anzahl an Kartenpaaren die entsprechende Menge an Karten-Knoten zu erzeugen, wird innerhalb von newGameXML() die Methode
-	  		  spreadCards() aufgerufen. Bei deren Aufruf werden zunächst abhängig von der Kartenanzahl die gewünschte Menge an Karten-Knoten
-	  		  mit korrekter ID und Paar-Nummer mit Hilfe der Funktion createCards() erzeugt und spreadCards() zusammen mit der Spalten- und Zeilenanzahl als Input übergeben.
+	  		  Um für die gewählte Anzahl an Kartenpaaren die entsprechende Menge an Karten-Knoten zu erzeugen, wird innerhalb von <emphasis role="italic">newGameXML()</emphasis> die Methode
+	  		  <emphasis role="italic">spreadCards()</emphasis> aufgerufen. Bei deren Aufruf werden zunächst abhängig von der Kartenanzahl die gewünschte Menge an Karten-Knoten
+	  		  mit korrekter ID und Paar-Nummer mit Hilfe der Funktion <emphasis role="italic">createCards()</emphasis> erzeugt und <emphasis role="italic">spreadCards()</emphasis> zusammen mit der Spalten- und Zeilenanzahl als Input übergeben.
 	  		  Der Wert der Positions-Elemente ist jedoch für alle Karten zunächst noch Null.
-	  		  Erst beim Durchlauf der Funktion spreadCards() werden den einzelnen Karten per Zufalls-Permutation Zeilen- und Spalten-Nummer zugewiesen.
+	  		  Erst beim Durchlauf der Funktion <emphasis role="italic">spreadCards()</emphasis> werden den einzelnen Karten per Zufalls-Permutation Zeilen- und Spalten-Nummer zugewiesen.
 			</sect2>
 	  		<sect2><title>Anzeige Spiele und Highscores</title>
 	  		  In der Lobby sind wie in Kapitel 1 beschrieben, die gespeicherten Spiele, als auch die Highscores anzuzeigen.
-	  		  Diese Anzeigen werden jeweils mit den Funktionen SavedGamesList() und HighScoreList() ermöglicht.
+	  		  Diese Anzeigen werden jeweils mit den Funktionen <emphasis role="italic">SavedGamesList()</emphasis> und <emphasis role="italic">HighScoreList()</emphasis> ermöglicht.
 	  		  Erstere läd alle gepeicherten Spiele aus der Datenbank, die vom aktuell eingeloggten Spieler angelegt wurden, und gibt für jedes dieser Spiele einen Knoten zurück, der ID und
 	  		  die zusammengefassten Namen der Spieler des Spiels als Elemente enthält.
-	  		  In HighScoreList () wird ein Knoten "highscores" mit allen in der Datenbank XSLT_highscores enthaltenene Spielern befüllt,
+	  		  In <emphasis role="italic">HighScoreList()</emphasis> wird ein Knoten &quot;highscores&quot; mit allen in der Datenbank <emphasis role="italic">XSLT_highscores</emphasis> enthaltenene Spielern befüllt,
 	  		  sortiert nach der Anzahl der Highscore-Punkte jedes enthaltenen Spielers.
-	  		  Diese Knoten werden dann in der lobby.xml ausgelesen und der Reihe nach angezeigt.
+	  		  Diese Knoten werden dann in der <emphasis role="italic">lobby.xml<emphasis> ausgelesen und der Reihe nach angezeigt.
 			</sect2>
 	  		<sect2><title>Spiellogik</title>
-		      <para>Eine zentrale Rolle im Memoryspiel und somit auch der Programmierung spielt die Funktion flipCard. Die einzige Handlungsmöglichkeit für die Spieler eines Memoryspiels ist es, eine Karte umzudrehen, wodurch gleichzeitig der weitere Spielverlauf beeinflusst wird.</para>
-			  <para>Die Methode flipCard erhält als Parameter die eindeutige ID der Karte im Spiel, ändert den Spielzustand in der Datenbank wie im Folgenden erklärt entsprechend ab und erstellt damit mithilfe des SVG-Creators die entsprechende GUI und gibt diese anschließend zurück. Da Änderungen an der Datenbank erst mit dem Beenden der Methode durchgeführt bzw. sichtbar sind, müssen entsprechende Änderungen sowohl in der Datenbank als auch in einer lokalen Kopie des Spiele-Datensatzes durchgeführt werden. Letzterer wird anschließend an den SVG-Creator übergeben.</para>
+		      <para>Eine zentrale Rolle im Memoryspiel und somit auch der Programmierung spielt die Funktion <emphasis role="italic">flipCard()</emphasis>. Die einzige Handlungsmöglichkeit für die Spieler eines Memoryspiels ist es, eine Karte umzudrehen, wodurch gleichzeitig der weitere Spielverlauf beeinflusst wird.</para>
+			  <para>Die Methode <emphasis role="italic">flipCard()</emphasis> erhält als Parameter die eindeutige ID der Karte im Spiel, ändert den Spielzustand in der Datenbank wie im Folgenden erklärt entsprechend ab und erstellt damit mithilfe des SVG-Creators die entsprechende GUI und gibt diese anschließend zurück. Da Änderungen an der Datenbank erst mit dem Beenden der Methode durchgeführt bzw. sichtbar sind, müssen entsprechende Änderungen sowohl in der Datenbank als auch in einer lokalen Kopie des Spiele-Datensatzes durchgeführt werden. Letzterer wird anschließend an den SVG-Creator übergeben.</para>
 			  <para>Zunächst wird überprüft, ob die Karte noch umgedreht auf dem Spielfeld liegt (@card_state=“hidden“). Trifft dies nicht zu, erfolgt keine Aktion und die Methode wird bereits wieder beendet, da die entsprechende Karte demnach entweder bereits aufgedeckt auf dem Spieltisch liegt oder zu einem bereits gefundenen Paar gehört und nicht mehr im Spiel ist.</para>
-			  <para>Da zu einem Spielzug das Aufdecken von zwei Spielkarten gehört, wird nun überprüft, ob es sich hierbei um die erste oder zweite Karte des Zuges handelt. Im ersten Fall (first_card=0) wird die aktuell umgedrehte Karte als erste Karte markiert, das Spiel-Element first_card also auf die ID der Karte gesetzt. Außerdem wird die aktuelle Karte umgedreht (@card_state=“flipped“).</para>
-			  <para>Wurde dagegen bereits eine Karte umgedreht, first_card also bereits mit einer Karten-ID belegt, wird geprüft, ob die beiden Karten ein Paar bilden, deren beiden group-Attribute also übereinstimmen. In diesem Fall werden dem aktuelle Spieler zwei Punkte gutgeschrieben, die Gruppen-ID im Spiel in lastpair gespeichert und beide Karten aus dem Spiel genommen.</para>
-			  <para>Hierfür werden ihre card_state-Attribute in der Datenbank auf „outofgame“ gesetzt, lokal auf „showandhide“, wodurch diese in der GUI zunächst aufgedeckt angezeigt und kurz darauf ausgeblendet werden. Außerdem muss an dieser Stelle überprüft werden, ob das Spiel hiermit bereits beendet ist. Dies geschieht durch die Überprüfung der Methode checkGameState, ob nun bereits alle Karten umgedreht wurden bzw. keine verdeckten Karten mehr auf dem Tisch liegen. Trifft dies zu, so wird der Zustand des Spiels (game_state) auf „finished“ gesetzt sowie die Gewinner des
-			  aktuellen Spiels ermittelt und im Spiele-Eintrag als "winners"-Element eingefügt.</para>
-			  <para>Außerdem werden über die Methode insertHighScores die Gewinner des Spiels bei Bedarf in die HighScores-Liste eingetragen.</para>
-			  <para>Sollte es sich bei den beiden umgedrehten Karten um kein Paar handeln, ist der nächste Spieler am Zug und active_player_id wird entsprechend gesetzt. „firstCard“ wird zurückgesetzt und die Karten werden wieder umgedreht, in der Datenbank card_state also auf „covered“ gesetzt und lokal zwecks Anzeige des Motivs der Karten und anschließendem Umdrehen auf „showandflip“.</para>
-			 <para> Der evtl. nun veränderte Eintrag zum aktuellen Spiel wird nun an den SVG-Creator übergeben, welcher die neue GUI erstellt. Anschließend wird diese zurückgegeben.</para>
+			  <para>Da zu einem Spielzug das Aufdecken von zwei Spielkarten gehört, wird nun überprüft, ob es sich hierbei um die erste oder zweite Karte des Zuges handelt. Im ersten Fall (first_card=0) wird die aktuell umgedrehte Karte als erste Karte markiert, das Spiel-Element <emphasis role="italic">first_card</emphasis> also auf die ID der Karte gesetzt. Außerdem wird die aktuelle Karte umgedreht (@card_state=“flipped“).</para>
+			  <para>Wurde dagegen bereits eine Karte umgedreht, <emphasis role="italic">first_card</emphasis> also bereits mit einer Karten-ID belegt, wird geprüft, ob die beiden Karten ein Paar bilden, deren beiden <emphasis role="italic">group</emphasis>-Attribute also übereinstimmen. In diesem Fall werden dem aktuelle Spieler zwei Punkte gutgeschrieben, die Gruppen-ID im Spiel in <emphasis role="italic">lastpair</emphasis> gespeichert und beide Karten aus dem Spiel genommen.</para>
+			  <para>Hierfür werden ihre <emphasis role="italic">card_state</emphasis>-Attribute in der Datenbank auf &quot;outofgame&quot; gesetzt, lokal auf &quot;showandhide&quot;, wodurch diese in der GUI zunächst aufgedeckt angezeigt und kurz darauf ausgeblendet werden. Außerdem muss an dieser Stelle überprüft werden, ob das Spiel hiermit bereits beendet ist. Dies geschieht durch die Überprüfung der Methode <emphasis role="italic">checkGameState()</emphasis>, ob nun bereits alle Karten umgedreht wurden bzw. keine verdeckten Karten mehr auf dem Tisch liegen. Trifft dies zu, so wird der Zustand des Spiels (<emphasis role="italic">game_state</emphasis>) auf &quot;finished&quot; gesetzt sowie die Gewinner des
+			  aktuellen Spiels ermittelt und im Spiele-Eintrag als <emphasis role="italic">winners</emphasis>-Element eingefügt.</para>
+			  <para>Außerdem werden über die Methode <emphasis role="italic">insertHighScores()</emphasis> die Gewinner des Spiels bei Bedarf in die HighScores-Liste eingetragen.</para>
+			  <para>Sollte es sich bei den beiden umgedrehten Karten um kein Paar handeln, ist der nächste Spieler am Zug und <emphasis role="italic">active_player_id</emphasis> wird entsprechend gesetzt. <emphasis role="italic">firstCard</emphasis> wird zurückgesetzt und die Karten werden wieder umgedreht, in der Datenbank <emphasis role="italic">card_state</emphasis> also auf &quot;covered&quot; gesetzt und lokal zwecks Anzeige des Motivs der Karten und anschließendem Umdrehen auf &quot;showandflip&quot;.</para>
+			 <para> Der eventuell nun veränderte Eintrag zum aktuellen Spiel wird nun an den SVG-Creator übergeben, welcher die neue GUI erstellt. Anschließend wird diese zurückgegeben.</para>
 			  <figure><title>Kontrollflussgraph zur Funktion</title>
 		        <imageobject>
 		            <imagedata scale="60" fileref="input/images/FlipCard.jpg"/>
@@ -109,23 +109,23 @@
 			  Konzeptionell lässt sich das Spiel in zwei Bereiche einteilen: Zum einen existiert die Lobby, in der die Highscore-Liste zu finden ist,
 			  neue Spiele erstellt und alte Spiele geladen werden können. Zum anderen gibt es die Darstellung für das Memory-Spiel selbst, mitsamt der Karten
 			  und dem User-Interface. Diese  Zweiteilung lässt sich in ähnlicher Weise auch in der Implementierung wiederfinden,
-			  wobei jedoch Unterschiede in der jeweiligen Umsetzung bestehen. Der statische Teil der Lobby liegt direkt als Datei(&quot;Lobby.xml&quot;) vor,
+			  wobei jedoch Unterschiede in der jeweiligen Umsetzung bestehen. Der statische Teil der Lobby liegt direkt als Datei(<emphasis role="italic">Lobby.xml</emphasis>) vor,
 			  und nutzt RestXQ um die übrigen Elemente einzufügen (Highscoreliste, Liste der gespeicherten Spiele). Auch wird die Instanz des XForms-Modell
 			  mittels RestXQ erzeugt. Für die Darstellung eines aktiven Spiels wird hingegen ein anderer Ansatz verfolgt, welcher sich
 			  auf XSL Transformationen stützt um aus den Spieldaten die aktuelle Sicht zu erzeugen. Da diese Umsetzung alle nötigen Informationen
 			  aus der Datenbank und der Session-ID bezieht, lässt sich das Laden und Speichern eines Spiels damit mit wenig zusätzlichem Aufwand realisieren.
-			  Um aus den Daten die Ausgabe mittels eines XSL Stylesheets zu erzeugen wird die Funktion &quot;xslt:transform($input, $stylesheet)&quot; auf
+			  Um aus den Daten die Ausgabe mittels eines XSL Stylesheets zu erzeugen wird die Funktion <emphasis role="italic">xslt:transform($input, $stylesheet)</emphasis> auf
 			  die XML Daten angewendet. Diese verwendet als Default den Xalan Prozessor für die Transformationen, bzw. den Saxxon Prozessor, falls verfügbar.
-			  Mittels des hier verwendete Stylesheet(&quot;svg_creator.xsl&quot;) erzeugt dieser Prozessor das XHTML Dokument (inklusive XForms-Modell und Kontrollen),
+			  Mittels des hier verwendete Stylesheet(<emphasis role="italic">svg_creator.xsl</emphasis>) erzeugt dieser Prozessor das XHTML Dokument (inklusive XForms-Modell und Kontrollen),
 			  welches dem Nutzer anschließend durch den Browser als aktuelle Sicht angezeigt wird. Da XSLT unter anderem Schleifen unterstützt,
 			  lässt sich auf diese Weise eine eindeutige Submission für jede Karte erzeugen, aufgrund derer übermittelt wird, welche Karte vom Spieler selektiert wurde.
-			  Mittels &quot;xsl:choose&quot; kann eine Fallunterscheidung getroffen werden, um beispielsweise zu entscheiden, welche Seite
+			  Mittels <emphasis role="italic">xsl:choose</emphasis> kann eine Fallunterscheidung getroffen werden, um beispielsweise zu entscheiden, welche Seite
 			  einer Karte angezeigt werden soll. Auch die finale Zusammenfassung der Spiels, inklusive der Bekanntgabe der Gewinner erfogt mittels des Stylesheets.
 			  Die Neu-Erzeugung des Dokuments bringt für das Memory-Projekt einige Vorteile mit sich und zeigt akzeptable Performanz. Für größere Projekte sollten jedoch
 			  weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
 	  	</sect1>
 	  	<sect1><title>Kommunikation Client/Server</title>
-      Die Requests und Responses zwischen Client und Server sind im folgenden Interaktionsdiagram graphisch am Beispiel der flipcard() Methode dargestellt.
+      Die Requests und Responses zwischen Client und Server sind im folgenden Interaktionsdiagram graphisch am Beispiel der <emphasis role="italic">flipcard()</emphasis> Methode dargestellt.
 	  	</sect1>
       <figure><title>Interaktionsdiagram für flip_card() Methode</title>
           <imageobject>
