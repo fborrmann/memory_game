@@ -125,10 +125,11 @@
 			  weitere Optimierungen vorgenommen werden oder ein anderer Ansatz verfolgt werden, um ausreichend schnell auf Nutzer-Eingaben reagieren zu können.
 	  	</sect1>
 	  	<sect1><title>Kommunikation Client/Server</title>
-      		Die Requests und Responses zwischen Client und Server sind im folgenden Interaktionsdiagram graphisch am Beispiel der <emphasis role="italic">flipcard()</emphasis> Methode dargestellt.
-      		Die ursprüngliche Interaktion erfolgt am Eingabefenster welches mit XForms realisiert wird.
-	        Die Kommunikation zum Server erfolgt dann duch den Controller, welcher die dazu erforderlichen RestXQ Funktionen beinhaltet.
-	        Die resultierenden Methodenaufrufe werden mit Hilfe von XQuery über URL's ausgeführt.
+      		Die Requests und Responses zwischen Client und Server im Memory Game sind im folgenden Interaktionsdiagram graphisch am Beispiel der <emphasis role="italic">flipcard()</emphasis> Methode dargestellt.
+          Das Beispiel zeigt exemplarisch wie der ganze Prozess generell, chronologisch abläuft.
+      		Am Anfang erfolgt die ursprüngliche Interaktion zwischen User und Client über das Eingabefenster. Dieses ist mit XForms realisiert.
+	        Die Kommunikation des erfolgten Requests zum Server geschieht dann duch den Controller, welcher die dazu erforderlichen RestXQ Funktionen beinhaltet.(In diesem Beispiel <emphasis role="italic">flipcard()</emphasis>)
+	        Der resultierende Methodenaufruf, also der Response, wird mit Hilfe von XQuery über URL's ausgeführt.
       		<figure><title>Interaktionsdiagram für flip_card() Methode</title>
 		          <imageobject>
 		              <imagedata scale="38" fileref="input/images/interaktionsdiagram.png"/>
